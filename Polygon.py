@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import random
 import math
 
-class Figure:
+class Polygon:
     def __init__(self, global_x, global_y):
         self.height=random.randint(10, 100)
         self.width=random.randint(10, 100)
@@ -19,13 +19,13 @@ class Figure:
         points = []
         for _ in range(self.counter):
             points.append(self.getPoint())
-            return points
+        return points
 
 
 
-figure=Figure(1000,1000)
+polygon=Polygon(1000,1000)
 
-points=figure.getPoints()
+points=polygon.getPoints()
 # по идее мы имеем список кортежей, который вернули обращением к методу getPoints()
 # но согласно print - у нас выводится только 2 значения... WTF
 print(points)
