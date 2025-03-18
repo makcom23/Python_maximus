@@ -7,6 +7,7 @@ class Polygon:
         self.height=random.randint(10, 100)
         self.width=random.randint(10, 100)
         self.counter=random.randint(3, 10)
+        self.counter=4
         self.center_x=random.randint(self.width, global_x)
         self.center_y=random.randint(self.height, global_y)
 
@@ -19,8 +20,12 @@ class Polygon:
         points = []
         for _ in range(self.counter):
             points.append(self.getPoint())
-        return points
 
+        # sort
+        return self.sortArray(points)
+    def sortArray(self, arr):
+        
+        return []
 
 
 polygon=Polygon(1000,1000)
