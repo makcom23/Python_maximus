@@ -7,6 +7,7 @@ height = 1000
 width = 1000
 
 poligonNumber = range(4)
+visualizer = vlz.Visualizer()
 
 poligons = []
 
@@ -18,9 +19,9 @@ for _ in poligonNumber:
         for p_item in poligons:
             # тут нужно проверить что они не пересекаются
             # если не пересекаются с существующими - то добавляем в коллекцию
-    
+            pass
     
 
-vis = vlz.Visualizer()
-vis.PrintPoligons(poligons)
+
+visualizer.PrintPoligons(poligons)
 
