@@ -16,7 +16,7 @@ for _ in poligonNumber:
     if len(poligons)==0:
         poligons.append(poligon)
     else:
-        for p_item in poligons:
+        for item in poligons:
             # тут нужно проверить что они не пересекаются
             # если не пересекаются с существующими - то добавляем в коллекцию
             pass
