@@ -11,7 +11,15 @@ poligonNumber = range(4)
 poligons = []
 
 for _ in poligonNumber:
-    poligons.append(plg.Polygon(width,height))
+    poligon = plg.Polygon(width,height)
+    if len(poligons)==0:
+        poligons.append(poligon)
+    else:
+        for p_item in poligons:
+            # тут нужно проверить что они не пересекаются
+            # если не пересекаются с существующими - то добавляем в коллекцию
+    
+    
 
 vis = vlz.Visualizer()
 vis.PrintPoligons(poligons)
