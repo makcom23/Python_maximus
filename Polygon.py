@@ -1,5 +1,7 @@
 import random
 import math
+import sys
+import numpy as np
 
 class Polygon:
     def __init__(self, global_x, global_y):
@@ -20,14 +22,35 @@ class Polygon:
     
     def getPoints(self):
         points = []
-        for _ in range(self.counter):
+        for i in range(self.counter):
+            #if i < self.counter // 2:
             points.append(self.getPoint())
 
         # sort
         return self.sortArray(points)
-    def sortArray(self, arr):
-        
-        return arr
+    def sortArray(self, points):
+        if not points:
+            return []
 
+        sorted_points = [points[0]]
+        remaining_points = points[1:]
 
+        while remaining_points:
+            last_point = sorted_points[-1]
+            nearest_point = None
+            nearest_distance = float('inf')
+
+            for point in remaining_points:
+                distance = self.distance(last_point, point)
+                if distance < nearest_distance:
+                    nearest_distance = distance
+                    nearest_point = point
+
+            sorted_points.append(nearest_point)
+            remaining_points.remove(nearest_point)
+
+        return sorted_points
+
+    def distance(self,p1,p2):
+        return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
 
