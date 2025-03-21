@@ -98,6 +98,39 @@ class Polygon:
     def distance(self,p1,p2):
         return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
     
-    def isExistsIntersections (self):
+    def isExistsIntersections (self, points):
+        
+        def orientation(p, q, r): # проверка ориентации векторов, возвращает знак поворота:
+        # >0 — левый поворот
+        # <0 — правый поворот
+        # ==0 — точки на одной прямой
+            return (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0])
+    
+        # создаем "векторы" из пар точек массива
+        vectors=[]
+        for i in range(len(points)):
+            A = points[i]
+            B = points[(i+1) % len(points)] 
+            vectors.append([A, B])
+        # теперь создаем список пар векторов которые не примыкают друг к другу 
+        for i in range(len(vectors)): # цикл создания пар векторов для проверки пересечения
+            A, B = vectors[i]
+            
+            for j in range(i+1, len(vectors)):
+                C, D = vectors[j]
+                if abs(i-j)==1 or (i==0 and j==len(vectors)-1): # проверка на непересечение
+                    continue
+                  
+                # создаем ориентации
+                o1 = orientation(A, B, C)
+                o2 = orientation(A, B, D)
+                o3 = orientation(C, D, A)
+                o4 = orientation(C, D, B)
+
+                # Если C и D по разные стороны от AB, и A и B по разные стороны от CD
+                if o1 * o2 < 0 and o3 * o4 < 0:
+                    return True
+                    
+                            
         return False
 
