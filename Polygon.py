@@ -73,18 +73,18 @@ class Polygon:
         if not points:
             return []
 
-        # Находим центр всех точек
-        center_x = sum(p[0] for p in points) / len(points)
-        center_y = sum(p[1] for p in points) / len(points)
+        # 1. Находим центр всех точек
+        center_x = sum(p[0] for p in points) / len(points) # Среднее значение X
+        center_y = sum(p[1] for p in points) / len(points) # Среднее значение Y
 
-        # Функция сортировки по углу
+        # 2. Функция для вычисления угла точки относительно центра
         def polar_angle(p):
             return math.atan2(p[1] - center_y, p[0] - center_x)
 
-        # Сортируем по полярному углу
+        # 3. Сортируем точки по углу наклона (по полярному углу)
         sorted_points = sorted(points, key=polar_angle)
 
-        # Замыкаем контур, добавляя первую точку в конец списка
+        # 4. Добавляем первую точку в конец, чтобы контур замкнулся
         sorted_points.append(sorted_points[0])
 
         return sorted_points
