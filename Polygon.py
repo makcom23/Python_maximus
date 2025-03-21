@@ -14,6 +14,7 @@ class Polygon:
         self.right = self.center_x + self.width // 2
         self.top = self.center_y + self.height // 2
         self.bottom = self.center_y - self.height // 2
+        self.points = []
 
     def getPoint(self):
         x_point = random.randint(int(self.center_x-self.width/2), int(self.center_x+self.width/2))
@@ -21,13 +22,18 @@ class Polygon:
         return x_point, y_point
     
     def getPoints(self):
-        points = []
+        self.points = []
         for i in range(self.counter):
             #if i < self.counter // 2:
-            points.append(self.getPoint())
+            self.points.append(self.getPoint())
 
         # sort
-        return self.sortArray2(points)
+        self.points = self.sortArray2(self.points)
+
+        if self.isExistsIntersections() == False:
+            return self.points
+        else:
+            return self.getPoints()
 
 
     def sortArray(self, points):
@@ -91,4 +97,7 @@ class Polygon:
 
     def distance(self,p1,p2):
         return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
+    
+    def isExistsIntersections (self):
+        return False
 
