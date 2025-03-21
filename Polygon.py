@@ -27,27 +27,65 @@ class Polygon:
             points.append(self.getPoint())
 
         # sort
-        return self.sortArray(points)
+        return self.sortArray2(points)
+
+
     def sortArray(self, points):
+        # Проверяем, если список точек пустой
+        if not points:
+            # Если список пустой, возвращаем пустой список
+            return []
+
+        # Инициализируем отсортированный список первой точкой из исходного списка
+        sorted_points = [points[0]]
+        # Создаем список оставшихся точек, исключая первую точку
+        remaining_points = points[1:]
+
+        # Пока в списке оставшихся точек есть элементы, продолжаем цикл
+        while remaining_points:
+            # Получаем последнюю добавленную точку из отсортированного списка
+            last_point = sorted_points[-1]
+            # Инициализируем ближайшую точку как None (пока не найдем)
+            nearest_point = None
+            # Инициализируем расстояние до ближайшей точки как бесконечность (чтобы первое найденное расстояние было меньше)
+            nearest_distance = float('inf')
+
+            # Проходим по каждой оставшейся точке
+            for point in remaining_points:
+                # Вычисляем расстояние между последней точкой и текущей точкой
+                distance = self.distance(last_point, point)
+                # Если вычисленное расстояние меньше текущего ближайшего расстояния
+                if distance < nearest_distance:
+                    # Обновляем ближайшее расстояние
+                    nearest_distance = distance
+                    # Обновляем ближайшую точку
+                    nearest_point = point
+
+            # Добавляем найденную ближайшую точку в отсортированный список
+            sorted_points.append(nearest_point)
+            # Удаляем добавленную точку из списка оставшихся точек
+            remaining_points.remove(nearest_point)
+
+        # Возвращаем отсортированный список точек
+        return sorted_points
+
+    def sortArray2(self, points):
         if not points:
             return []
 
-        sorted_points = [points[0]]
-        remaining_points = points[1:]
+        # Находим центр всех точек
+        center_x = sum(p[0] for p in points) / len(points)
+        center_y = sum(p[1] for p in points) / len(points)
 
-        while remaining_points:
-            last_point = sorted_points[-1]
-            nearest_point = None
-            nearest_distance = float('inf')
+        # Функция сортировки по углу
+        def polar_angle(p):
+            return math.atan2(p[1] - center_y, p[0] - center_x)
 
-            for point in remaining_points:
-                distance = self.distance(last_point, point)
-                if distance < nearest_distance:
-                    nearest_distance = distance
-                    nearest_point = point
+        # Сортируем по полярному углу
+        sorted_points = sorted(points, key=polar_angle)
 
-            sorted_points.append(nearest_point)
-            remaining_points.remove(nearest_point)
+        # Замыкаем контур, добавляя первую точку в конец списка
+        sorted_points.append(sorted_points[0])
 
         return sorted_points
 
