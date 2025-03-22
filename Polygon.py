@@ -30,7 +30,7 @@ class Polygon:
         # sort
         self.points = self.sortArray2(self.points)
 
-        if self.isExistsIntersections() == False:
+        if self.isExistsIntersections(self.points) == False:
             return self.points
         else:
             return self.getPoints()
