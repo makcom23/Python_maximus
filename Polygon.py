@@ -8,7 +8,7 @@ class Polygon:
         self.height=random.randint(10, 100)
         self.width=random.randint(10, 100)
         self.counter=random.randint(3, 10)
-        self.counter = 3
+        #self.counter = 3
         self.center_x=random.randint(self.width, global_x)
         self.center_y=random.randint(self.height, global_y)
         self.left = self.center_x - self.width // 2
@@ -105,12 +105,20 @@ class Polygon:
     
     def isExistsIntersections (self, points):
 
-        def orientation(x, y, z): # проверка ориентации векторов, возвращает знак поворота:
-        # >0 — левый поворот
-        # <0 — правый поворот
-        # ==0 — точки на одной прямой
-            return (y[0] - x[0]) * (z[1] - x[1])   -   (y[1] - x[1]) * (z[0] - x[0])
-    
+        def orientation(point1, point2, point3): # проверка ориентации векторов, возвращает знак поворота:
+        # >0 — левый поворот # <0 — правый поворот  # ==0 — точки на одной прямой
+            x1, y1 = point1 # распаковываем кортежи
+            x2, y2 = point2
+            x3, y3 = point3
+            return (x2 - x1) * (y3 - y1) - (y2 - y1) * (x3 - x1)
+            # т.е. имея 3 точки, мы формируем 2 вектора: A = point1 -> point2 = (x2 - x1, y2 - y1)
+            #                                            B = point1 -> point3 = (x3 - x1, y3 - y1)
+            # и далее производим векторное умножения для определения знака, указываещего на ориентацию
+            # т.е.: A*B=(x2−x1)∗(y3−y1)−(y2−y1)∗(x3−x1) 
+            # и так для каждой точки вектора, а далее проверка, на какой полуплоскостии лежат точки,
+            # если они лежат в разных полуплоскостях, то имеют разные знаки - пересекат другой вектор
+            # если в одной полуплоскости - то имеею одинаковые знаки - не пересекают
+        
         # создаем "векторы" из пар точек массива
         vectors=[]
         for i in range(len(points)):
