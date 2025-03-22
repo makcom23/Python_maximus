@@ -8,6 +8,7 @@ class Polygon:
         self.height=random.randint(10, 100)
         self.width=random.randint(10, 100)
         self.counter=random.randint(3, 10)
+        self.counter = 3
         self.center_x=random.randint(self.width, global_x)
         self.center_y=random.randint(self.height, global_y)
         self.left = self.center_x - self.width // 2
@@ -30,11 +31,14 @@ class Polygon:
         # sort
         self.points = self.sortArray(self.points)
         self.points = self.sortArray2(self.points)
-
+        
         if self.isExistsIntersections(self.points) == False:
+            self.points.append(self.points[0])
             return self.points
         else:
             return self.getPoints()
+        
+
 
 
     def sortArray(self, points):
@@ -92,7 +96,7 @@ class Polygon:
         sorted_points = sorted(points, key=polar_angle)
 
         # 4. Добавляем первую точку в конец, чтобы контур замкнулся
-        sorted_points.append(sorted_points[0])
+        #sorted_points.append(sorted_points[0])
 
         return sorted_points
 
