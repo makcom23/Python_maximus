@@ -28,6 +28,7 @@ class Polygon:
             self.points.append(self.getPoint())
 
         # sort
+        self.points = self.sortArray(self.points)
         self.points = self.sortArray2(self.points)
 
         if self.isExistsIntersections(self.points) == False:
