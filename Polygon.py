@@ -30,7 +30,7 @@ class Polygon:
         # sort
         self.points = self.sortArray2(self.points)
 
-        if self.isExistsIntersections() == False:
+        if self.isExistsIntersections(self.points) == False:
             return self.points
         else:
             return self.getPoints()
@@ -100,11 +100,11 @@ class Polygon:
     
     def isExistsIntersections (self, points):
 
-        def orientation(p, q, r): # проверка ориентации векторов, возвращает знак поворота:
+        def orientation(x, y, z): # проверка ориентации векторов, возвращает знак поворота:
         # >0 — левый поворот
         # <0 — правый поворот
         # ==0 — точки на одной прямой
-            return (q[0] - p[0]) * (r[1] - p[1])     - (q[1] - p[1]) * (r[0] - p[0])
+            return (y[0] - x[0]) * (z[1] - x[1])   -   (y[1] - x[1]) * (z[0] - x[0])
     
         # создаем "векторы" из пар точек массива
         vectors=[]
@@ -112,6 +112,7 @@ class Polygon:
             A = points[i]
             B = points[(i+1) % len(points)] 
             vectors.append([A, B])
+            print('vectors: ', vectors)
         # теперь создаем список пар векторов которые не примыкают друг к другу 
         for i in range(len(vectors)): # цикл создания пар векторов для проверки пересечения
             A, B = vectors[i]
