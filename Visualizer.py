@@ -1,5 +1,6 @@
 import Polygon
 import matplotlib.pyplot as plt
+import random 
 
 class Visualizer:
     def __init__(self):
@@ -8,13 +9,14 @@ class Visualizer:
     def PrintPoligons(self, poligons):
         # тут в цикле все рисуем на одной плоскости
         # а пока так
-        if len(poligons)>0:
-            poligon = poligons[0]
+        
+        for i in range(len(poligons)):
+            poligon = poligons[i]
             points=poligon.getPoints()
-            print(points)
             x_coord, y_coord = zip(*points)
             plt.plot(x_coord, y_coord, marker="o", linestyle="-", color="b", label="Quadro")
-            plt.show()
+            
+        plt.show()
 
 
         return
