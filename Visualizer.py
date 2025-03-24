@@ -11,10 +11,10 @@ class Visualizer:
         # а пока так
         
         for i in range(len(poligons)):
-            poligon = poligons[i]
-            points=poligon.getPoints()
+            polygon = poligons[i]
+            points=polygon.getPoints()
             x_coord, y_coord = zip(*points)
-            plt.plot(x_coord, y_coord, marker="o", linestyle="-", color="b", label="Quadro")
+            plt.plot(x_coord, y_coord, marker=".", linestyle="-", color='b', label="Polygons")
             
         plt.show()
 

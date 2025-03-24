@@ -16,6 +16,12 @@ class Polygon:
         self.top = self.center_y + self.height // 2
         self.bottom = self.center_y - self.height // 2
         self.points = []
+    
+    def updatePolygon(self): # передаются новые координаты центра полигонов - проверка на пересечение
+        self.left = self.center_x - self.width // 2
+        self.right = self.center_x + self.width // 2
+        self.top = self.center_y + self.height // 2
+        self.bottom = self.center_y - self.height // 2
 
     def getPoint(self):
         x_point = random.randint(int(self.center_x-self.width/2), int(self.center_x+self.width/2))
