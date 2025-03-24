@@ -16,6 +16,10 @@ class Polygon:
         self.top = self.center_y + self.height // 2
         self.bottom = self.center_y - self.height // 2
         self.points = []
+
+    def checkIntersectPolygon (self, item):
+        return self.right < item.left or self.left > item.right or self.top < item.bottom or self.bottom > item.top
+    
     
     def updatePolygon(self): # передаются новые координаты центра полигонов - проверка на пересечение
         self.left = self.center_x - self.width // 2
