@@ -44,5 +44,5 @@ while check:
 explorer = expl.Explorer(poligons)
 
 print(counter)
-visualizer.PrintPoligons(poligons)
+visualizer.PrintPoligons(poligons, explorer.getPath())
 

@@ -7,7 +7,7 @@ class Visualizer:
     def __init__(self):
     
         return
-    def PrintPoligons(self, poligons, points):
+    def PrintPoligons(self, poligons, steps):
         # тут в цикле все рисуем на одной плоскости
         # а пока так
         
@@ -17,7 +17,9 @@ class Visualizer:
             x_coord, y_coord = zip(*points)
             plt.plot(x_coord, y_coord, marker=".", linestyle="-", color='b', label="Polygons")
             
-        
+        for step in steps:
+            x_coord, y_coord = step
+            plt.plot(x_coord, y_coord, marker=".", linestyle="-", color='r', label="explorer")
         plt.show()
 
 
