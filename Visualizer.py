@@ -1,12 +1,13 @@
 import Polygon
 import matplotlib.pyplot as plt
 import random 
+import Explorer as expl
 
 class Visualizer:
     def __init__(self):
     
         return
-    def PrintPoligons(self, poligons):
+    def PrintPoligons(self, poligons, points):
         # тут в цикле все рисуем на одной плоскости
         # а пока так
         
@@ -16,6 +17,7 @@ class Visualizer:
             x_coord, y_coord = zip(*points)
             plt.plot(x_coord, y_coord, marker=".", linestyle="-", color='b', label="Polygons")
             
+        
         plt.show()
 
 
