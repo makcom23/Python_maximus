@@ -8,14 +8,14 @@ class Visualizer:
     
         return
     def PrintPoligons(self, poligons, steps):
-        # тут в цикле все рисуем на одной плоскости
+        # тут в цикле все рисуем на одной плоскости 
         # а пока так
         
         for i in range(len(poligons)):
             polygon = poligons[i]
             points=polygon.getPoints()
             x_coord, y_coord = zip(*points)
-            plt.plot(x_coord, y_coord, marker=".", linestyle="-", color='b', label="Polygons")
+            plt.plot(x_coord, y_coord, marker=".", linestyle="-", label="Polygons")
             
         for step in steps:
             x_coord, y_coord = step

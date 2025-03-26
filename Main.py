@@ -10,7 +10,8 @@ height = 500
 width = 500
 
 poligonNumber = range(rnd.randint(3, 50)) # количество полигонов
-poligonNumber = range(100)
+poligonNumber = range(10)
+#poligonNumber = range(2)
 visualizer = vlz.Visualizer()
 counter = 0
 poligons = []
@@ -44,5 +45,5 @@ while check:
 explorer = expl.Explorer(poligons)
 
 print(counter)
-visualizer.PrintPoligons(poligons, explorer.getPath())
+visualizer.PrintPoligons(poligons, explorer.getPath()) # не понял запись explorer.getPath()!!!
 
