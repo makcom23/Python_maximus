@@ -20,11 +20,19 @@ class Explorer():
         self.start = (min_x, min_y) # вычислить минимальное значение по X, Y
         self.finish = (max_x, max_y)# вычислить максимальное значение по X, Y
     
-    def getPath (self):
+    def getPath(self):
+        x1, y1 = self.start
+        x2, y2 = self.finish
         points = []
-       
-        points.append(self.start)
-        points.append(self.finish)
+        x=x1
+        while x<x2:
+            y = ((x*(y2-y1)-x2*(y2-y1))/(x2-x1))+(y2**2-y2*y1)/(y2-y1)
+            points.append((x,y))
+            x+=1
+        
         return points
-        pass
+    
+   
+
+        
 
