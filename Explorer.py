@@ -28,10 +28,27 @@ class Explorer():
         while x<x2:
             y = ((x*(y2-y1)-x2*(y2-y1))/(x2-x1))+(y2**2-y2*y1)/(y2-y1)
             points.append((x,y))
+            isCrossSection2()
             x+=1
         
         return points
     
+    def isCrossSection2(self, points, poligons):
+        x1, y1 = points
+        x2, y2 = self.finish
+        for poligon in poligons:
+            for point in poligon:
+                x3, y3 = point
+                o1 = (x2 - x1) * (y3 - y1) - (y2 - y1) * (x3 - x1)
+
+            
+
+
+
+    #def straightLine(self, start, finish, x):
+        #x1, y1 = self.start
+        #x2, y2 = self.finish
+        #return ((x*(y2-y1)-x2*(y2-y1))/(x2-x1))+(y2**2-y2*y1)/(y2-y1)
    
 
         

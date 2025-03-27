@@ -10,7 +10,7 @@ height = 500
 width = 500
 
 poligonNumber = range(rnd.randint(3, 50)) # количество полигонов
-poligonNumber = range(10)
+poligonNumber = range(50)
 #poligonNumber = range(2)
 visualizer = vlz.Visualizer()
 counter = 0
