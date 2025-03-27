@@ -32,7 +32,8 @@ class Explorer():
         x2, y2 = self.finish
         points = []
         x=x1
-        while x<x2:
+        y=y1
+        while x<x2 and y<y2:
             y = ((x*(y2-y1)-x2*(y2-y1))/(x2-x1))+(y2**2-y2*y1)/(y2-y1)
             if self.checkNearestPolygon(x, y, self.poligons):
                x-=1 
