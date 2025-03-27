@@ -36,7 +36,8 @@ class Explorer():
         while x<x2 and y<y2:
             y = ((x*(y2-y1)-x2*(y2-y1))/(x2-x1))+(y2**2-y2*y1)/(y2-y1)
             if self.checkNearestPolygon(x, y, self.poligons):
-               x-=1 
+               print("Crossed polygon")
+               x-=1
                y-=1
             else: points.append((x,y))  
             x+=1
