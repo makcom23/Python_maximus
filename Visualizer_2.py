@@ -1,115 +1,100 @@
-# Импорт модулей и зависимостей
-import Visualizer  # Базовый визуализатор
-import pygame as pg  # Библиотека для отрисовки
-import Polygon  # Модуль, содержащий класс полигона
+# Импорт модулей
+import Visualizer
+import pygame as pg
+import Polygon
 import sys
-from pygame.locals import *  # Константы событий
-import Explorer as expl  # Модуль для поиска пути
+from pygame.locals import *
+import Explorer as expl
 
-# Расширение базового визуализатора
 class Visualizer_2(Visualizer.Visualizer):
     def __init__(self):
-        # Инициализация стартовых и конечных координат области визуализации
         self.start = (0, 0)
         self.finish = (1000, 1999)
-
-        # Размеры окна отрисовки (в пикселях)
         self.HEIGHT = 600
         self.WIDTH = 800
+        self.GREEN = (0, 255, 0)
+        self.WHITE = (255, 255, 255)
+        self.BLUE = (0, 0, 255)
+        self.global_scale = 1.0
 
-        # Цвета в RGB-формате
-        self.GREEN = (0, 255, 0)   # цвет полигонов
-        self.WHITE = (255, 255, 255)  # цвет фона
-        self.BLUE = (0, 0, 255)    # запасной цвет
+    def transform_coordinates(self, x, y):
+        x -= self.scene_start[0]
+        y -= self.scene_start[1]
+        x *= self.scale
+        y *= self.scale
+        x *= self.global_scale
+        y *= self.global_scale
+        x += self.padding
+        y += self.padding
+        return int(x), int(y)
 
-    # Главный метод отрисовки всех полигонов и пути
     def PrintPoligons(self, polygons, explorer):
-        # Определяем минимальные и максимальные координаты всех полигонов
-        min_point, max_point = self.getMinMaxPoints(polygons)
+        min_point, max_point = self.getMinMaxSceneRect(polygons)
+        self.setSceneBorders(min_point, max_point)  # Устанавливаем границы сцены
+        self.calculate_scale()
 
-        # Устанавливаем границы и размеры окна на основе этих координат
-        self.setBorders(min_point, max_point)
-
-        # Сдвигаем все точки так, чтобы они помещались в окно
-        self.shiftPolygonPoints(polygons, min_point, max_point)
-
-        # Инициализация окна pygame
         pg.init()
-        surf = pg.display.set_mode((self.WIDTH, self.HEIGHT)) 
-        surf.fill(self.WHITE)  # Заливка фона
+        self.screen = pg.display.set_mode((self.WIDTH, self.HEIGHT))
+        self.screen.fill(self.WHITE)
 
-        # Загружаем и воспроизводим звук шагов в фоне (бесконечно)
-        try:
-            pg.mixer.init()
-            pg.mixer.music.load("topot.wav")  # Локальный путь к звуковому файлу в корне проекта
-            pg.mixer.music.set_volume(0.3)  # Уровень громкости (0.0 - 1.0)
-            pg.mixer.music.play(-1)  # -1 означает бесконечное повторение
-        except Exception as e:
-            print(f"Ошибка загрузки звука: {e}")
-
-        # Рисуем каждый полигон, если в нем достаточно точек
+        self.play_music()
+        clock = pg.time.Clock()
+        clock.tick(60)
+        
         for polygon in polygons:
-            pg.draw.polygon(surf, self.GREEN, polygon.points)
+            if not polygon.points:
+                polygon.points = polygon.getPoints()
+            pixel_points = []
+            for x, y in polygon.points:
+                pixel_x, pixel_y = self.transform_coordinates(x, y)
+                pixel_points.append((pixel_x, pixel_y))
+            pg.draw.polygon(self.screen, self.GREEN, pixel_points)
 
-        # Получаем маршрут из объекта-исследователя
         steps = explorer.getPath()
         for step in steps:
-            pass  # здесь добавить отрисовку пути
+            x, y = step
+            pixel_x, pixel_y = self.transform_coordinates(x, y)
+            pg.draw.circle(self.screen, self.BLUE, (pixel_x, pixel_y), 3)
 
-        # Основной цикл pygame — поддерживает открытым окно
         run = True
         while run:
             for e in pg.event.get():
                 if e.type == pg.QUIT:
                     run = False
-            pg.display.update()  # Обновление экрана
+            pg.display.update()
+        pg.quit()
 
-        pg.quit()  # Завершение работы с pygame
-
-    # Устанавливает границы области и размеры окна отображения
-    def setBorders(self, min_point, max_point):
+    def setSceneBorders(self, min_point, max_point):
         min_x, min_y = min_point
         max_x, max_y = max_point
 
-        # Устанавливаем координаты начала и конца области с отступом
-        self.start = (min_x - 5, min_y - 5)
-        self.finish = (max_x + 5, max_y + 5)
-
-        # Обновляем размеры окна
-        self.WIDTH = max_x - min_x + 100
-        self.HEIGHT = max_y - min_y + 100
-
-    # Сдвигает все точки полигонов, чтобы вписать их в окно визуализации с масштабированием
-    def shiftPolygonPoints(self, polygons, min_point, max_point):
-        min_x, min_y = min_point
-        max_x, max_y = max_point
-
-        # Вычисляем ширину и высоту всей сцены
+        # Calculate scene dimensions
         scene_width = max_x - min_x
         scene_height = max_y - min_y
 
-        # Коэффициенты масштабирования по ширине и высоте
+        # Add padding based on scene dimensions and global scale
+        padding_x = scene_width * 0.1 * self.global_scale
+        padding_y = scene_height * 0.1 * self.global_scale
+
+        self.scene_start = (min_x - padding_x, min_y - padding_y)
+        self.scene_finish = (max_x + padding_x, max_y + padding_y)
+
+        # Update window dimensions based on padded scene and global scale
+        self.WIDTH = int((self.scene_finish[0] - self.scene_start[0]) * self.global_scale)
+        self.HEIGHT = int((self.scene_finish[1] - self.scene_start[1]) * self.global_scale)
+
+    def calculate_scale(self):
+        scene_width = self.scene_finish[0] - self.scene_start[0]
+        scene_height = self.scene_finish[1] - self.scene_start[1]
+
+        # Calculate scale based on padded scene dimensions and window size
         scale_x = (self.WIDTH - 20) / scene_width if scene_width != 0 else 1
         scale_y = (self.HEIGHT - 20) / scene_height if scene_height != 0 else 1
 
-        # Используем минимальный коэффициент, чтобы сохранить пропорции
-        scale = min(scale_x, scale_y)
+        self.scale = min(scale_x, scale_y)
+        self.padding = 10  # Minimum padding
 
-        for polygon in polygons:
-            if not polygon.points:
-                polygon.points = polygon.getPoints()
-            for i in range(len(polygon.points)):
-                x, y = polygon.points[i]
-                # Сначала нормализуем координаты относительно минимальных значений
-                x -= min_x
-                y -= min_y
-                # Масштабируем и добавляем отступ
-                x = int(x * scale + 10)
-                y = int(y * scale + 10)
-                polygon.points[i] = (x, y)
-
-    # Возвращает минимальные и максимальные координаты всех полигонов
-    def getMinMaxPoints(self, polygons):
+    def getMinMaxSceneRect(self, polygons):
         lefts = [p.left for p in polygons]
         rights = [p.right for p in polygons]
         tops = [p.top for p in polygons]
@@ -121,3 +106,12 @@ class Visualizer_2(Visualizer.Visualizer):
         max_y = max(tops)
 
         return (min_x, min_y), (max_x, max_y)
+    
+    def play_music(self):
+        try:
+            pg.mixer.init()
+            pg.mixer.music.load("topot.wav")
+            pg.mixer.music.set_volume(0.3)
+            pg.mixer.music.play(-1)
+        except Exception as e:
+            print(f"Ошибка загрузки звука: {e}")
