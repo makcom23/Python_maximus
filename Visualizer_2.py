@@ -40,13 +40,12 @@ class Visualizer_2(Visualizer.Visualizer):
 
         # Рисуем каждый полигон, если в нем достаточно точек
         for polygon in polygons:
-            if len(polygon.points) > 2:
-                pg.draw.polygon(surf, self.GREEN, polygon.points)
+            pg.draw.polygon(surf, self.GREEN, polygon.points)
 
         # Получаем маршрут из объекта-исследователя
         steps = explorer.getPath()
         for step in steps:
-            pass  # здесь можно добавить отрисовку пути
+            pass  # здесь добавить отрисовку пути
 
         # Основной цикл pygame — поддерживает открытым окно
         run = True
