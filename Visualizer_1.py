@@ -17,11 +17,11 @@ class Visualizer_1(Visualizer.Visualizer):
             polygon = poligons[i]
             points=polygon.getPoints()
             x_coord, y_coord = zip(*points)
-            plt.plot(x_coord, y_coord, marker=".", linestyle="-", label="Polygons")
+            plt.plot(x_coord, y_coord, linestyle="-", label="Polygons")
             
-        for step in steps:
-            x_coord, y_coord = step
-            plt.plot(x_coord, y_coord, marker=".", linestyle="-", color='r', label="explorer")
+
+            x_coord, y_coord = zip(*steps)
+            plt.plot(x_coord, y_coord, linestyle="-", color='r', label="explorer")
         plt.show()
 
 

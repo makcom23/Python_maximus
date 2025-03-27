@@ -3,19 +3,26 @@ import Polygon as plg
 class Explorer():
     def __init__(self, poligons):
         
-        lefts =[]
-        rights = []
-        tops = []
-        bottoms = []
+        self.poligons=poligons
+        self.lefts =[]
+        self.rights = []
+        self.tops = []
+        self.bottoms = []
+        self.sumCenter_x=[]
+        self.sumCenter_y=[]
+
         for poligon in poligons:
-            lefts.append(poligon.left)
-            bottoms.append(poligon.bottom)
-            tops.append(poligon.top)
-            rights.append(poligon.right)
-        min_x = min(lefts)
-        min_y = min(bottoms)
-        max_x = max(rights)
-        max_y = max(tops)   
+            self.lefts.append(poligon.left)
+            self.bottoms.append(poligon.bottom)
+            self.tops.append(poligon.top)
+            self.rights.append(poligon.right)
+            self.sumCenter_x.append(poligon.center_x)
+            self.sumCenter_y.append(poligon.center_y)
+        min_x = min(self.lefts)
+        min_y = min(self.bottoms)
+        max_x = max(self.rights)
+        max_y = max(self.tops)
+
 
         self.start = (min_x, min_y) # вычислить минимальное значение по X, Y
         self.finish = (max_x, max_y)# вычислить максимальное значение по X, Y
@@ -27,19 +34,29 @@ class Explorer():
         x=x1
         while x<x2:
             y = ((x*(y2-y1)-x2*(y2-y1))/(x2-x1))+(y2**2-y2*y1)/(y2-y1)
-            points.append((x,y))
-            isCrossSection2()
+            if self.checkNearestPolygon(x, y, self.poligons):
+               x-=1 
+               y-=1
+            else: points.append((x,y))
             x+=1
         
         return points
     
-    def isCrossSection2(self, points, poligons):
-        x1, y1 = points
-        x2, y2 = self.finish
+    def checkNearestPolygon(self, x, y, poligons):
+        crossedPolygon =[]
         for poligon in poligons:
-            for point in poligon:
-                x3, y3 = point
-                o1 = (x2 - x1) * (y3 - y1) - (y2 - y1) * (x3 - x1)
+            if x >= poligon.left and x <= poligon.right and y >= poligon.bottom and y <= poligon.top:
+                crossedPolygon.append(poligon)
+                return True
+            return False
+
+    
+    
+
+
+
+        
+        
 
             
 
