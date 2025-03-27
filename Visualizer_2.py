@@ -38,6 +38,15 @@ class Visualizer_2(Visualizer.Visualizer):
         surf = pg.display.set_mode((self.WIDTH, self.HEIGHT)) 
         surf.fill(self.WHITE)  # Заливка фона
 
+        # Загружаем и воспроизводим звук шагов в фоне (бесконечно)
+        try:
+            pg.mixer.init()
+            pg.mixer.music.load("topot.wav")  # Локальный путь к звуковому файлу в корне проекта
+            pg.mixer.music.set_volume(0.3)  # Уровень громкости (0.0 - 1.0)
+            pg.mixer.music.play(-1)  # -1 означает бесконечное повторение
+        except Exception as e:
+            print(f"Ошибка загрузки звука: {e}")
+
         # Рисуем каждый полигон, если в нем достаточно точек
         for polygon in polygons:
             pg.draw.polygon(surf, self.GREEN, polygon.points)
