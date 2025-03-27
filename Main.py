@@ -1,5 +1,5 @@
 import Polygon as plg
-import Visualizer as vlz
+import Visualizer_1 as vlz
 import random as rnd 
 import Explorer as expl
 
@@ -10,9 +10,9 @@ height = 500
 width = 500
 
 poligonNumber = range(rnd.randint(3, 50)) # количество полигонов
-poligonNumber = range(10)
+
 #poligonNumber = range(2)
-visualizer = vlz.Visualizer()
+visualizer = vlz.Visualizer_1()
 counter = 0
 poligons = []
 
@@ -45,5 +45,5 @@ while check:
 explorer = expl.Explorer(poligons)
 
 print(counter)
-visualizer.PrintPoligons(poligons, explorer.getPath())
+visualizer.PrintPoligons(poligons, explorer)
 
