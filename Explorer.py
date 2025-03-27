@@ -37,7 +37,7 @@ class Explorer():
             if self.checkNearestPolygon(x, y, self.poligons):
                x-=1 
                y-=1
-            else: points.append((x,y))
+            else: points.append((x,y))  
             x+=1
         
         return points
