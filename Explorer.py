@@ -35,11 +35,7 @@ class Explorer():
 
         points = []
         while self.current != self.finish:
-            next = self.getNextPosition()
-            lengthToFinish = self.vector_length(self.current, self.finish)
-
-            vectorLength = self.vector_length(self.start, self.finish)
-
+            
             next = self.nextStep()
             x,y = next
             # TODO: проверить на пересечение с полигонами
@@ -59,13 +55,18 @@ class Explorer():
         return next
 
     
-    def checkNearestPolygon(self, x, y, poligons):
-        crossedPolygon =[]
+    def checkNearestPolygon(self, nextpoint, poligons):
+        crossedPolygons=[]
+        x, y = nextpoint
+        res = True
         for poligon in poligons:
             if x >= poligon.left and x <= poligon.right and y >= poligon.bottom and y <= poligon.top:
-                crossedPolygon.append(poligon)
-                return True
-            return False
+                res = False
+                crossedPolygons.append(poligon)
+        if res == True:
+            return nextpoint
+        else: 
+            self.pointCrossPoly(self, self.currentPoint, self.nextPoint) # проверка на пересечения
 
     def getNextPosition(self):
         ## Получаем угол между текущей и конечной точками
@@ -131,11 +132,21 @@ class Explorer():
         with open("log.txt", "w") as log_file:
             log_file.write("")
         
+    def pointCrossPoly(self, currentPoint, nextPoint): # ищем пересечения отрезка(вектора) с потенциальными полигонами 
+        A = currentPoint
+        B = nextPoint
+        for polygon in self.crossedPolygons: 
+            for point in range(len(polygon)-1):
+                C = polygon [point]
+                D = polygon [point+1]
+                # создаем ориентации
+                o1 = self.orientation(A, B, C) # используем функцию orientation из polygon.py
+                o2 = self.orientation(A, B, D)
+                o3 = self.orientation(C, D, A)
+                o4 = self.orientation(C, D, B)
 
-            
-
-
-
-
+                # Если C и D по разные стороны от AB, и A и B по разные стороны от CD
+                if o1 * o2 < 0 and o3 * o4 < 0:
+                    return True
+        return False
         
-
