@@ -139,7 +139,7 @@ class Polygon:
             A = points[i]
             B = points[(i+1) % len(points)] 
             vectors.append([A, B])
-            print('vectors: ', vectors)
+            #print('vectors: ', vectors)
         # теперь создаем список пар векторов которые не примыкают друг к другу 
         for i in range(len(vectors)): # цикл создания пар векторов для проверки пересечения
             A, B = vectors[i]
