@@ -1,4 +1,5 @@
 import Polygon as plg
+import math
 
 class Explorer():
     def __init__(self, poligons):
@@ -35,13 +36,19 @@ class Explorer():
         y=y1
         while x<x2 and y<y2:
             y = ((x*(y2-y1)-x2*(y2-y1))/(x2-x1))+(y2**2-y2*y1)/(y2-y1)
+
             if self.checkNearestPolygon(x, y, self.poligons):
                print("Crossed polygon")
-               x-=1
-               y-=1
-            else: points.append((x,y))  
-            x+=1
-        
+               angle = math.radians(10)
+               new_x = x*math.cos(angle) + y*math.sin(angle)
+               new_y = -x*math.sin(angle) + y*math.cos(angle)
+               x = new_x+10 
+               y = new_y+10
+
+            else: 
+                points.append((x,y))
+                x+=1
+    
         return points
     
     def checkNearestPolygon(self, x, y, poligons):
@@ -50,7 +57,8 @@ class Explorer():
             if x >= poligon.left and x <= poligon.right and y >= poligon.bottom and y <= poligon.top:
                 crossedPolygon.append(poligon)
                 return True
-            return False
+            
+        return False
 
     
     
