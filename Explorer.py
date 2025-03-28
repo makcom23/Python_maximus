@@ -149,4 +149,5 @@ class Explorer():
                 if o1 * o2 < 0 and o3 * o4 < 0:
                     return True
         return False
-        
+
+       #jhg 
