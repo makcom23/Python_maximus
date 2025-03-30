@@ -67,7 +67,7 @@ class Explorer():
         if res == True:
             return nextpoint
         else: 
-            if self.pointCrossPoly(crossedPolygons, nextpoint):   # проверка на пересечения
+            if self.pointCrossPoly_2(crossedPolygons, nextpoint):   # проверка на пересечения
                 pass        
 
 
@@ -141,6 +141,23 @@ class Explorer():
 
                 # Если C и D по разные стороны от AB, и A и B по разные стороны от CD
                 if o1 * o2 < 0 and o3 * o4 < 0:
+                    return True
+        return False
+    
+    def pointCrossPoly_2(self, crossedPolygons, nextPoint): # ищем пересечения отрезка(вектора) с потенциальными полигонами 
+        C = self.current
+        N = nextPoint
+
+        for polygon in crossedPolygons: 
+            for i in range(len(polygon.points)-1):
+                A = polygon.points [i]
+                B = polygon.points [i+1]
+                # создаем ориентации
+                res = polygon.orientation_2(C,N,A,B)                
+
+                # Если C и D по разные стороны от AB, и A и B по разные стороны от CD
+                if res == True:
+                    print("is crossed")
                     return True
         return False
 

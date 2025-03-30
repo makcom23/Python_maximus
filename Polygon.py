@@ -161,4 +161,37 @@ class Polygon:
         # а далее проверка, на какой полуплоскостии лежат точки,
         # если они лежат в разных полуплоскостях, то имеют разные знаки - пересекат другой вектор
         # если в одной полуплоскости - то имеею одинаковые знаки - не пересекают
-    
+
+    def multiplyVectors(self, vector_A, vector_B):
+        x_a, y_a = vector_A
+        x_b, y_b = vector_B
+        return x_a * y_b - y_a * x_b
+
+    def orientation_2(self, current, next, A, B):
+        C = current
+        N = next
+        c_x, c_y = C
+        n_x, n_y = N
+        a_x, a_y = A
+        b_x, b_y = B
+
+        # Создаем векторы
+        vector_CN = (n_x - c_x, n_y - c_y)
+        vector_CA = (a_x - c_x, a_y - c_y)
+
+        vector_CB = (b_x - c_x, b_y - c_y)
+
+        vector_AN = (n_x - a_x, n_y - a_y)
+        vector_AC = (c_x - a_x, c_y - a_y)
+
+        vector_AB = (b_x - a_x, b_y - a_y)
+
+        # Вычисляем произведение векторов
+        R1 = self.multiplyVectors(vector_CN, vector_CA)
+        R2 = self.multiplyVectors(vector_CN, vector_CB)
+        
+        R3 = self.multiplyVectors(vector_AN, vector_CB)
+        R4 = self.multiplyVectors(vector_AN, vector_CB)
+        
+        # Возвращаем ориентацию
+        return R1 * R2 <= 0 and R3 * R4 <= 0
