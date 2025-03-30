@@ -46,7 +46,7 @@ class Polygon:
             self.points.append(self.points[0])
             return self.points
         else:
-            return self.getPoints()
+            return self.getPoints() # WTF Ш0сь тут не те...!!!
         
 
 
