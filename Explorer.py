@@ -39,7 +39,8 @@ class Explorer():
             next = self.nextStep()
             x,y = next
             # TODO: проверить на пересечение с полигонами
-            
+            self.checkNearestPolygon(next, self.poligons)
+
             self.current = next
             
             points.append((x,y))  
@@ -56,8 +57,8 @@ class Explorer():
 
     
     def checkNearestPolygon(self, nextpoint, poligons):
-        crossedPolygons=[]
-        x, y = nextpoint
+        crossedPolygons=[] # список потенциально-пересекаемых полигонов
+        x, y = nextpoint 
         res = True
         for poligon in poligons:
             if x >= poligon.left and x <= poligon.right and y >= poligon.bottom and y <= poligon.top:
@@ -66,9 +67,11 @@ class Explorer():
         if res == True:
             return nextpoint
         else: 
-            self.pointCrossPoly(self, self.currentPoint, self.nextPoint) # проверка на пересечения
+            if self.pointCrossPoly(crossedPolygons, nextpoint):   # проверка на пересечения
+                pass        
 
-    def getNextPosition(self):
+
+    def getNextPosition(self): # вычисление следующей точки
         ## Получаем угол между текущей и конечной точками
         alfa = self.getRadAngle(self.current, self.finish)
 
@@ -77,17 +80,8 @@ class Explorer():
         x = x1 + self.STEP * math.cos(alfa)
         y = y1 + self.STEP * math.sin(alfa)
         # тут можно было бы  использовать y = y1 + self.STEP * math.sin(alfa), но это не результат не очень хороший точный
-        #return (x,y)
+        return (x,y)
 
-        x2, y2 = self.finish
-        # теперь скорректируем y, чтобы он вычислялся по уравнению прямой линии между двумя точками
-        y_correcting = ((x*(y2-y1)-x2*(y2-y1))/(x2-x1))+(y2**2-y2*y1)/(y2-y1)
-
-        msg = f"current: {self.current}, finish: {self.finish}, x: {x}, y: {y_correcting}"
-        print(msg)
-        self.log(msg)
-
-        return (x, y_correcting)
     
 
     def getRadAngle(self, point_1, point_2):
@@ -122,8 +116,8 @@ class Explorer():
         x1, y1 = point1
         x2, y2 = point2
         
-        return vector_length(x1, y1, x2, y2)
-
+        result= vector_length(x1, y1, x2, y2)
+        return result
 
     def log(self, message):
         with open("log.txt", "a") as log_file:
@@ -132,22 +126,22 @@ class Explorer():
         with open("log.txt", "w") as log_file:
             log_file.write("")
         
-    def pointCrossPoly(self, currentPoint, nextPoint): # ищем пересечения отрезка(вектора) с потенциальными полигонами 
-        A = currentPoint
+    def pointCrossPoly(self, crossedPolygons, nextPoint): # ищем пересечения отрезка(вектора) с потенциальными полигонами 
+        A = self.current
         B = nextPoint
-        for polygon in self.crossedPolygons: 
-            for point in range(len(polygon)-1):
-                C = polygon [point]
-                D = polygon [point+1]
+        for polygon in crossedPolygons: 
+            for i in range(len(polygon.points)-1):
+                C = polygon.points [i]
+                D = polygon.points [i+1]
                 # создаем ориентации
-                o1 = self.orientation(A, B, C) # используем функцию orientation из polygon.py
-                o2 = self.orientation(A, B, D)
-                o3 = self.orientation(C, D, A)
-                o4 = self.orientation(C, D, B)
+                o1 = polygon.orientation(A, B, C) # используем функцию orientation из polygon.py
+                o2 = polygon.orientation(A, B, D)
+                o3 = polygon.orientation(C, D, A)
+                o4 = polygon.orientation(C, D, B)
 
                 # Если C и D по разные стороны от AB, и A и B по разные стороны от CD
                 if o1 * o2 < 0 and o3 * o4 < 0:
                     return True
         return False
 
-       #jhg 
+       

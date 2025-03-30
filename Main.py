@@ -13,11 +13,11 @@ poligonNumber = range(rnd.randint(3, 50)) # количество полигон�
 poligonNumber = range(20)
 #poligonNumber = range(2)
 visualizer = vlz.Visualizer_1()
-counter = 0
 poligons = []
 
 for _ in poligonNumber:
     poligon = plg.Polygon(width,height)
+    poligon.createPoints()
     poligons.append(poligon)
 
 check = True
@@ -27,7 +27,6 @@ while check:
         for j in range((i+1), len(poligons)):
             item1 = poligons[i]
             item2 = poligons[j]
-            counter = counter + 1
             if not  item1.checkIntersectPolygon(item2):
                 step = rnd.randint(-10, 10)
                 j = 1 if step > 0  else -1

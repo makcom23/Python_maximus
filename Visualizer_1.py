@@ -15,7 +15,7 @@ class Visualizer_1(Visualizer.Visualizer):
 
         for i in range(len(poligons)):
             polygon = poligons[i]
-            points=polygon.getPoints()
+            points=polygon.points
             x_coord, y_coord = zip(*points)
             plt.plot(x_coord, y_coord, linestyle="-", label="Polygons")
             
