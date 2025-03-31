@@ -6,8 +6,8 @@ import Explorer as expl
 
 # Основной рабочий процесс
 
-height = 800
-width = 800
+height = 300
+width = 300
 
 poligonNumber = range(rnd.randint(3, 50)) # количество полигонов
 poligonNumber = range(50)
