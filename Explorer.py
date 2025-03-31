@@ -13,7 +13,7 @@ class Explorer():
         self.sumCenter_x=[]
         self.sumCenter_y=[]
 
-        for poligon in poligons:
+        for poligon in poligons: 
             self.lefts.append(poligon.left)
             self.bottoms.append(poligon.bottom)
             self.tops.append(poligon.top)
@@ -68,7 +68,12 @@ class Explorer():
             return nextpoint
         else: 
             if self.pointCrossPoly(crossedPolygons, nextpoint):   # проверка на пересечения
-                pass        
+                nextpoint = self.rotatePoint(nextpoint)
+                return self.checkNearestPolygon(nextpoint, poligons)
+            else:
+                return nextpoint
+                  
+            #TODO если точка пересекает полигон, то меняем угол, делаем шаг и снова проверяем     
 
 
     def getNextPosition(self): # вычисление следующей точки
