@@ -12,7 +12,7 @@ class Explorer():
         self.bottoms = []
         self.sumCenter_x=[]
         self.sumCenter_y=[]
-
+        self.clearLog()
         for poligon in poligons:
             self.lefts.append(poligon.left)
             self.bottoms.append(poligon.bottom)
@@ -20,6 +20,7 @@ class Explorer():
             self.rights.append(poligon.right)
             self.sumCenter_x.append(poligon.center_x)
             self.sumCenter_y.append(poligon.center_y)
+            self.log(f"polygon: {poligon.points}")
         min_x = min(self.lefts)
         min_y = min(self.bottoms)
         max_x = max(self.rights)
@@ -30,8 +31,8 @@ class Explorer():
         self.current = self.start # текущая позиция
     
     def getPath(self):
-        self.clearLog()
-        self.log(f"start: {self.start}, finish: {self.finish}")
+        
+        
 
         points = []
         while self.current != self.finish:
@@ -44,6 +45,7 @@ class Explorer():
             self.current = next
             
             points.append((x,y))  
+        self.log(f"points: {points}")
         return points
     
     def nextStep(self):
