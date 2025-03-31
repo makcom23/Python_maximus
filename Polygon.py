@@ -175,7 +175,13 @@ class Polygon:
         x_N, y_N = N
         x_A, y_A = A
         x_B, y_B = B
-
+        #           
+        #           . A
+        #   C
+        #   .
+        #                       . N
+        #
+        #           . B
         # Создаем векторы
         CB = (x_B - x_C, y_B - y_C)
         CN = (x_N - x_C, y_N - y_C)
