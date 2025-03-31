@@ -68,6 +68,7 @@ class Explorer():
             return nextpoint
         else: 
             if self.pointCrossPoly(crossedPolygons, nextpoint):   # проверка на пересечения
+                return nextpoint
                 nextpoint = self.rotatePoint(nextpoint)
                 return self.checkNearestPolygon(nextpoint, poligons)
             else:

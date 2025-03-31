@@ -6,11 +6,11 @@ import Explorer as expl
 
 # Основной рабочий процесс
 
-height = 500
-width = 500
+height = 1000
+width = 1000
 
 poligonNumber = range(rnd.randint(3, 50)) # количество полигонов
-poligonNumber = range(5)
+poligonNumber = range(50)
 #poligonNumber = range(5)
 visualizer = vlz.Visualizer_1()
 poligons = []
