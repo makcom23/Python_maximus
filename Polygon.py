@@ -17,8 +17,8 @@ class Polygon:
         self.bottom = self.center_y - self.height // 2
         self.points = []
 
-    def checkIntersectPolygon (self, item):
-        return self.right < item.left or self.left > item.right or self.top < item.bottom or self.bottom > item.top
+    def isIntersectPolygon (self, item):
+        return not self.right < item.left or self.left > item.right or self.top < item.bottom or self.bottom > item.top
     
     
     def updatePolygon(self): # передаются новые координаты центра полигонов - проверка на пересечение
@@ -132,13 +132,15 @@ class Polygon:
                     continue
                   
                 # создаем ориентации
-                o1 = self.orientation(A, B, C)
-                o2 = self.orientation(A, B, D)
-                o3 = self.orientation(C, D, A)
-                o4 = self.orientation(C, D, B)
+                o1 = self.orientation(A, C, D)
+                # old version o1 = self.orientation(A, B, C)
+                o2 = self.orientation(B, C, D)
+                # old version o2 = self.orientation(A, B, D)
+                # old version o3 = self.orientation(C, D, A)
+                # old version o4 = self.orientation(C, D, B)
 
                 # Если C и D по разные стороны от AB, и A и B по разные стороны от CD
-                if o1 * o2 < 0 and o3 * o4 < 0:
+                if o1 * o2 < 0: # and o3 * o4 < 0:
                     return True # есть пересечение
                     
                             

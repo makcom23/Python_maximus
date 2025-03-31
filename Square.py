@@ -1,4 +1,4 @@
-t = int(input('Введи число 1: '))
-v = int(input('Введи число 2: '))
-rasst = t*v
-print (f'Результат {rasst} км')
+a = 'maximus'
+print(id(a))
+b=a
+print(type(b))
