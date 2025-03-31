@@ -65,7 +65,7 @@ class Explorer():
         for polygon in polygons:
             if x >= polygon.left and x <= polygon.right and y >= polygon.bottom and y <= polygon.top:
                 res = False
-                self.log(f"may be crossed polygon number{polygon.name}")
+                self.log(f"may be crossed polygon number: {polygon.name}")
                 crossedPolygons.append(polygon)
         if res == True:
             return nextpoint
