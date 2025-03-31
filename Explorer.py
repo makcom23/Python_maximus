@@ -153,11 +153,8 @@ class Explorer():
                 A = polygon.points [i]
                 B = polygon.points [i+1]
                 # создаем ориентации
-                res = polygon.orientation_2(C,N,A,B)                
-
-                # Если C и D по разные стороны от AB, и A и B по разные стороны от CD
+                res = polygon.isCrossed(C,N,A,B)                
                 if res == True:
-                    print("is crossed")
                     return True
         return False
 

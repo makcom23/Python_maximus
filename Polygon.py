@@ -167,31 +167,55 @@ class Polygon:
         x_b, y_b = vector_B
         return x_a * y_b - y_a * x_b
 
-    def orientation_2(self, current, next, A, B):
+    def isCrossed(self, current, next, A, B):
         C = current
         N = next
-        c_x, c_y = C
-        n_x, n_y = N
-        a_x, a_y = A
-        b_x, b_y = B
+        x_C, y_C = C
+        x_N, y_N = N
+        x_A, y_A = A
+        x_B, y_B = B
 
         # Создаем векторы
-        vector_CN = (n_x - c_x, n_y - c_y)
-        vector_CA = (a_x - c_x, a_y - c_y)
-
-        vector_CB = (b_x - c_x, b_y - c_y)
-
-        vector_AN = (n_x - a_x, n_y - a_y)
-        vector_AC = (c_x - a_x, c_y - a_y)
-
-        vector_AB = (b_x - a_x, b_y - a_y)
+        CB = (x_B - x_C, y_B - y_C)
+        CN = (x_N - x_C, y_N - y_C)
+        CA = (x_A - x_C, y_A - y_C)
+        BC = (x_C - x_B, y_C - y_B)
+        BA = (x_A - x_B, y_A - y_B)
+        BN = (x_N - x_B, y_N - y_B)
+        AC = (x_C - x_A, y_C - y_A)
+        AB = (x_B - x_A, y_B - y_A)
+        AN = (x_N - x_A, y_N - y_A)
+        NB = (x_B - x_N, y_B - y_N)
+        NC = (x_C - x_N, y_C - y_N)
+        NA = (x_A - x_N, y_A - y_N)
 
         # Вычисляем произведение векторов
-        R1 = self.multiplyVectors(vector_CN, vector_CA)
-        R2 = self.multiplyVectors(vector_CN, vector_CB)
+        R1 = self.multiplyVectors(CN, CB)
+        R2 = self.multiplyVectors(CN, CA)
         
-        R3 = self.multiplyVectors(vector_AN, vector_CB)
-        R4 = self.multiplyVectors(vector_AN, vector_CB)
+        R3 = self.multiplyVectors(BA, BN)
+        R4 = self.multiplyVectors(BA, BC)
+
+        R5 = self.multiplyVectors(AB, AC)
+        R6 = self.multiplyVectors(AB, AN)
+
+        R7 = self.multiplyVectors(NC, NB)
+        R8 = self.multiplyVectors(NC, NA)
         
         # Возвращаем ориентацию
-        return R1 * R2 <= 0 and R3 * R4 <= 0
+        res = R1 * R2 <= 0 and R3 * R4 <= 0 and R5 * R6 <= 0 and R7 * R8 <= 0
+        if(res):
+            print("CROSSED")
+        return res
+    
+
+p = Polygon(100,100)
+
+C = (2,2)
+N = (6,2)
+A = (6,3)
+B = (3,4)
+p.isCrossed(C,N,A,B)
+
+
+
