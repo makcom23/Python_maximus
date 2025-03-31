@@ -68,9 +68,11 @@ class Explorer():
             return nextpoint
         else: 
             if self.pointCrossPoly(crossedPolygons, nextpoint):   # проверка на пересечения
-                return nextpoint
+                #return nextpoint  - это нам уже не нужно?
                 nextpoint = self.rotatePoint(nextpoint)
-                return self.checkNearestPolygon(nextpoint, poligons)
+                res = True # так что ли запустить pointCrossPoly???   
+                # return self.checkNearestPolygon(nextpoint, poligons) - тут вероятно нужно снова функция 
+                # проверки pointCrossPoly
             else:
                 return nextpoint
                   
@@ -139,15 +141,27 @@ class Explorer():
             for i in range(len(polygon.points)-1):
                 C = polygon.points [i]
                 D = polygon.points [i+1]
+                
                 # создаем ориентации
-                o1 = polygon.orientation(A, B, C) # используем функцию orientation из polygon.py
-                o2 = polygon.orientation(A, B, D)
-                o3 = polygon.orientation(C, D, A)
-                o4 = polygon.orientation(C, D, B)
+                o1 = polygon.orientation(A, C, D) # используем функцию orientation из polygon.py
+                # o1 = polygon.orientation(A, B, C) # old version
+                o2 = polygon.orientation(B, C, D)
+                # o2 = polygon.orientation(A, B, D) # old version
+                # o3 = polygon.orientation(C, D, A) # old version
+                # o4 = polygon.orientation(C, D, B) # old version
 
                 # Если C и D по разные стороны от AB, и A и B по разные стороны от CD
-                if o1 * o2 < 0 and o3 * o4 < 0:
+                if o1 * o2 < 0: # and o3 * o4 < 0:
                     return True
         return False
 
-       
+    def rotatePoint(self, nextpoint):
+        alfa = self.getRadAngle(self.current, nextpoint)
+        alfa_grad = alfa/180*math.pi
+        x1, y1 = nextpoint
+        ## и вычисляем координаты следующей точки на основе этого угла
+        x = x1 + self.STEP * math.cos(alfa_grad+1)
+        y = y1 + self.STEP * math.sin(alfa_grad+1)
+        nextpoint = (x, y)
+        # тут можно было бы  использовать y = y1 + self.STEP * math.sin(alfa), но это не результат не очень хороший точный
+        return (nextpoint)       
