@@ -15,8 +15,9 @@ poligonNumber = range(5)
 visualizer = vlz.Visualizer_1()
 poligons = []
 
-for _ in poligonNumber:
+for i in poligonNumber:
     poligon = plg.Polygon(width,height)
+    poligon.name = i+1
     poligon.createPoints()
     poligons.append(poligon)
 

@@ -5,6 +5,7 @@ import numpy as np
 
 class Polygon:
     def __init__(self, global_x, global_y):
+        self.name = 0
         self.height=random.randint(10, 100)
         self.width=random.randint(10, 100)
         self.counter=random.randint(3, 10)

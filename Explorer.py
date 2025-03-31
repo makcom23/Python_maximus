@@ -20,7 +20,7 @@ class Explorer():
             self.rights.append(poligon.right)
             self.sumCenter_x.append(poligon.center_x)
             self.sumCenter_y.append(poligon.center_y)
-            self.log(f"polygon: {poligon.points}")
+            self.log(f"{poligon.name}: polygon: {poligon.points}")
         min_x = min(self.lefts)
         min_y = min(self.bottoms)
         max_x = max(self.rights)
@@ -58,14 +58,15 @@ class Explorer():
         return next
 
     
-    def checkNearestPolygon(self, nextpoint, poligons):
+    def checkNearestPolygon(self, nextpoint, polygons):
         crossedPolygons=[] # список потенциально-пересекаемых полигонов
         x, y = nextpoint 
         res = True
-        for poligon in poligons:
-            if x >= poligon.left and x <= poligon.right and y >= poligon.bottom and y <= poligon.top:
+        for polygon in polygons:
+            if x >= polygon.left and x <= polygon.right and y >= polygon.bottom and y <= polygon.top:
                 res = False
-                crossedPolygons.append(poligon)
+                self.log(f"may be crossed polygon number{polygon.name}")
+                crossedPolygons.append(polygon)
         if res == True:
             return nextpoint
         else: 
@@ -157,6 +158,7 @@ class Explorer():
                 # создаем ориентации
                 res = polygon.isCrossed(C,N,A,B)                
                 if res == True:
+                    self.log(f"MUST BE crossed poligon number{polygon.name}")
                     return True
         return False
 
