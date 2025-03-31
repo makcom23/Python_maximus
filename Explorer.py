@@ -158,7 +158,7 @@ class Explorer():
                 # создаем ориентации
                 res = polygon.isCrossed(C,N,A,B)                
                 if res == True:
-                    self.log(f"MUST BE crossed poligon number{polygon.name}")
+                    self.log(f"MUST BE crossed poligon number: {polygon.name}")
                     return True
         return False
 
