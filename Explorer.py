@@ -6,7 +6,7 @@ import sys
 class Explorer():
     def __init__(self, poligons):
         
-        self.STEP = 5 # шаг
+        self.STEP = 10 # шаг
         self.poligons=poligons
         self.lefts =[]
         self.rights = []
@@ -147,39 +147,53 @@ class Explorer():
     def rotatePoint(self, nextpoint):
         alfa = self.getRadAngle(self.current, nextpoint)
         alfa_grad = alfa * 180 / math.pi
+        alfa_grad = alfa_grad + 1
+        alfa_rad = alfa_grad * math.pi / 180
+
+        print(f"next = {nextpoint}, поворот на {alfa_grad}")
         x1, y1 = nextpoint
         ## и вычисляем координаты следующей точки на основе этого угла
-        x = x1 + self.STEP * math.cos(alfa_grad+1)
-        y = y1 + self.STEP * math.sin(alfa_grad+1)
+        x = x1 + self.STEP * math.cos(alfa_rad)
+        y = y1 + self.STEP * math.sin(alfa_rad)
         nextpoint = (x, y)
         # тут можно было бы  использовать y = y1 + self.STEP * math.sin(alfa), но это не результат не очень хороший точный
         return (nextpoint)       
     
     def getRadAngle(self, point_1, point_2):
-        def getRadAngle(x1, y1, x2, y2):
-            dx = x2 - x1
-            dy = y2 - y1
-            angle = math.atan2(dy, dx) #* 180 / math.pi
-            return angle
         x1, y1 = point_1
         x2, y2 = point_2
-        return getRadAngle(x1, y1, x2, y2)
+        dx = x2 - x1
+        dy = y2 - y1
+        angle = math.atan2(dy, dx)
+        return angle
 
     def rotatePoint2(self, nextpoint):
-        alfa = self.getRadAngle(self.current, nextpoint)
+        currentpoint = self.current
+        alfa = self.getRadAngle(currentpoint, nextpoint)
         alfa_grad = alfa * 180 / math.pi
         alfa_grad = alfa_grad + 1
         alfa_rad = alfa_grad * math.pi / 180
 
-        current = np.array(self.current)
+        current = np.array(currentpoint)
         nextpoint = np.array(nextpoint)
 
         vector = nextpoint - current
-        
-        R = np.array([[np.cos(alfa_rad),-np.sin(alfa_rad)],[np.sin(alfa_rad), np.cos(alfa_rad)]])
 
-        rotated_vector = np.dot(R, vector)
+        cos_rot = np.cos(alfa_rad)
+        sin_rot = np.sin(alfa_rad)
+
+        # Матрица поворота
+        rotation_matrix = np.array([
+            [cos_rot, -sin_rot],
+            [sin_rot,  cos_rot]
+        ])
+
+        # Поворачиваем вектор 
+        rotated_vector = rotation_matrix @ vector
+        # Находим новую позицию точки, добавляя повернутый вектор к центру
         rotated_point = current + rotated_vector
+        # Возвращаем как кортеж
         rotated_point = tuple(rotated_point)
+
         return rotated_point
     
