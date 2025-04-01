@@ -41,12 +41,12 @@ class Explorer():
         while self.current != self.finish:
             
             next = self.nextStep()
-            x,y = next
+            
             # TODO: проверить на пересечение с полигонами
             next = self.checkNearestPolygon(next, self.poligons)
             self.log(f"C:{self.current}, N:{next}")
             self.current = next
-            
+            x,y = next
             points.append((x,y))  
         return points
     
@@ -117,30 +117,26 @@ class Explorer():
         with open("log.txt", "w") as log_file:
             log_file.write("")
         
-    def pointCrossPoly(self, poligons, nextPoint): # ищем пересечения отрезка(вектора) с потенциальными полигонами 
-        C = self.current
-        N = nextPoint
-        res = False
-        for polygon in poligons: 
+    def pointCrossPoly(self, crossedPolygons, nextPoint): # ищем пересечения отрезка(вектора) с потенциальными полигонами 
+        A = self.current
+        B = nextPoint
+        for polygon in crossedPolygons: 
             for i in range(len(polygon.points)-1):
-                A = polygon.points [i]
-                B = polygon.points [i+1]
+                C = polygon.points [i]
+                D = polygon.points [i+1]
                 
-                r_t = self.isCrossed(C, N, A, B)
+                # создаем ориентации
+                o1 = polygon.orientation(A, C, D) # используем функцию orientation из polygon.py
+                # o1 = polygon.orientation(A, B, C) # old version
+                o2 = polygon.orientation(B, C, D)
+                # o2 = polygon.orientation(A, B, D) # old version
+                # o3 = polygon.orientation(C, D, A) # old version
+                # o4 = polygon.orientation(C, D, B) # old version
 
-                if r_t:
-                    self.log(f"Crossed: C({C}) -> N({N}) пересекает ({polygon.name}): A({A}) -> B({B})")
+                # Если C и D по разные стороны от AB, и A и B по разные стороны от CD
+                if o1 * o2 < 0: # and o3 * o4 < 0:
                     return True
-
-                res = res or r_t
-            if polygon.points[0] != polygon.points[-1]:
-                r_t1 = self.isCrossed(C, N, polygon.points[-1], polygon.points[0])
-                if r_t1:
-                    self.log(f"Crossed: C({C}) -> N({N}) пересекает ({polygon.name}): A({polygon.points[-1]}) -> B({polygon.points[0]})")
-                    return True
-                res = res or r_t1
-                
-        return res
+        return False
 
     def rotatePoint(self, nextpoint, attempt):
         alfa = self.getRadAngle(self.current, nextpoint)
@@ -148,10 +144,10 @@ class Explorer():
         alfa_grad = alfa_grad + 1
         alfa_rad = alfa_grad * math.pi / 180
 
-        x1, y1 = nextpoint
+        x1, y1 = self.current
         ## и вычисляем координаты следующей точки на основе этого угла
-        x = x1 + self.STEP * math.cos(alfa_grad)
-        y = y1 + self.STEP * math.sin(alfa_grad)
+        x = x1 + self.STEP * math.cos(alfa_rad)
+        y = y1 + self.STEP * math.sin(alfa_rad)
         rotated_point = (int(x), int(y))
 
         self.log(f"Поворот: C:{self.current}, N:{nextpoint} => {rotated_point}, поворот на {attempt+1} : {int(alfa_grad)} градус")
@@ -256,9 +252,9 @@ poligons = []
 poligon = plg.Polygon(300, 300)
 poligon.createPoints()
 poligon.name = 1
-poligon.points = [(120, 65), (130, 58), (100, 96), (120, 65)]
+poligon.points = [(92, 41), (97, 39), (89, 66), (92, 41)]
 poligons.append(poligon)
 
 explorer = Explorer(poligons)
-explorer.current = (100, 93)
-explorer.checkNearestPolygon((103, 96), poligons)
+explorer.current = (87, 62)
+explorer.checkNearestPolygon((90, 65), poligons)
