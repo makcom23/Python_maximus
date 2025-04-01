@@ -6,7 +6,7 @@ import sys
 class Explorer():
     def __init__(self, poligons):
         
-        self.STEP = 10 # шаг
+        self.STEP = 5 # шаг
         self.poligons=poligons
         self.lefts =[]
         self.rights = []
@@ -77,7 +77,8 @@ class Explorer():
             nextpoint = self.rotatePoint(nextpoint)
             attempt += 1
 
-        # если не удалось найти точку, возвращаем текущую как есть (или можно выбросить исключение)
+        # если не удалось найти точку, возвращаем текущую как есть
+        print("Не удалось найти точку после 360 попыток")
         return nextpoint
 
     def getNextPosition(self): # вычисление следующей точки
@@ -174,8 +175,6 @@ class Explorer():
         alfa_grad = alfa * 180 / math.pi
         alfa_grad = alfa_grad + 1
         alfa_rad = alfa_grad * math.pi / 180
-
-        print(f"next = {nextpoint}, поворот на {alfa_grad}")
 
         current = np.array(currentpoint)
         nextpoint = np.array(nextpoint)
