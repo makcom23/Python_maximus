@@ -174,6 +174,8 @@ class Explorer():
         alfa_grad = alfa_grad + 1
         alfa_rad = alfa_grad * math.pi / 180
 
+        print(f"next = {nextpoint}, поворот на {alfa_grad}")
+
         current = np.array(currentpoint)
         nextpoint = np.array(nextpoint)
 
