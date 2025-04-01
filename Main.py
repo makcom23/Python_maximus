@@ -2,10 +2,10 @@ import Polygon as plg
 import Visualizer_1 as vlz
 import random as rnd 
 import Explorer as expl
-
+import sys
 
 # Основной рабочий процесс
-
+sys.setrecursionlimit(50000)
 height = 300
 width = 300
 

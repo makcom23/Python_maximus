@@ -1,10 +1,12 @@
 import Polygon as plg
 import numpy as np
 import math
+import sys
 
 class Explorer():
     def __init__(self, poligons):
-        self.STEP = 10 # шаг
+        
+        self.STEP = 2 # шаг
         self.poligons=poligons
         self.lefts =[]
         self.rights = []
@@ -57,24 +59,26 @@ class Explorer():
 
     
     def checkNearestPolygon(self, nextpoint, poligons):
-        crossedPolygons=[] # список потенциально-пересекаемых полигонов
-        x, y = nextpoint 
-        res = True
-        for poligon in poligons:
-            if x >= poligon.left and x <= poligon.right and y >= poligon.bottom and y <= poligon.top:
-                res = False
-                crossedPolygons.append(poligon)
-        if res == True:
-            return nextpoint
-        else: 
-            if self.pointCrossPoly(crossedPolygons, nextpoint):   # проверка на пересечения
-                #return nextpoint  - это нам уже не нужно?
-                nextpoint = self.rotatePoint2(nextpoint)# поворот точки на 1 градус
-                
-                return self.checkNearestPolygon(nextpoint, poligons) #- тут вероятно нужно снова функция 
-                # проверки pointCrossPoly
-            else:
+        max_attempts = 360  # ограничение по количеству попыток (360 поворотов по 1 градусу)
+        attempt = 0
+        while attempt < max_attempts:
+            crossedPolygons = []
+            x, y = nextpoint
+            res = True
+            for poligon in poligons:
+                if poligon.left <= x <= poligon.right and poligon.bottom <= y <= poligon.top:
+                    res = False
+                    crossedPolygons.append(poligon)
+
+            if res or not self.pointCrossPoly(crossedPolygons, nextpoint):
                 return nextpoint
+
+            # поворот точки и увеличение счетчика попыток
+            nextpoint = self.rotatePoint(nextpoint)
+            attempt += 1
+
+        # если не удалось найти точку, возвращаем текущую как есть (или можно выбросить исключение)
+        return nextpoint
 
     def getNextPosition(self): # вычисление следующей точки
         ## Получаем угол между текущей и конечной точками
