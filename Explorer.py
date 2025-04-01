@@ -6,7 +6,7 @@ import sys
 class Explorer():
     def __init__(self, poligons):
         
-        self.STEP = 2 # шаг
+        self.STEP = 5 # шаг
         self.poligons=poligons
         self.lefts =[]
         self.rights = []
@@ -61,16 +61,16 @@ class Explorer():
     def checkNearestPolygon(self, nextpoint, poligons):
         max_attempts = 360  # ограничение по количеству попыток (360 поворотов по 1 градусу)
         attempt = 0
-        while attempt < max_attempts:
-            crossedPolygons = []
-            x, y = nextpoint
-            res = True
-            for poligon in poligons:
-                if poligon.left <= x <= poligon.right and poligon.bottom <= y <= poligon.top:
-                    res = False
-                    crossedPolygons.append(poligon)
+        crossedPolygons = []
+        x, y = nextpoint
 
-            if res or not self.pointCrossPoly(crossedPolygons, nextpoint):
+        for poligon in poligons:
+            if poligon.left <= x <= poligon.right and poligon.bottom <= y <= poligon.top:
+                crossedPolygons.append(poligon)
+
+        while attempt < max_attempts:
+
+            if len(crossedPolygons)==0 or not self.pointCrossPoly(crossedPolygons, nextpoint):
                 return nextpoint
 
             # поворот точки и увеличение счетчика попыток
