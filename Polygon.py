@@ -8,7 +8,7 @@ class Polygon:
         self.height=random.randint(10, 100)
         self.width=random.randint(10, 100)
         self.counter=random.randint(3, 10)
-        self.counter = 3
+        #self.counter = 3
         self.center_x=random.randint(self.width, global_x)
         self.center_y=random.randint(self.height, global_y)
         self.left = self.center_x - self.width // 2

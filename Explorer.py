@@ -6,7 +6,7 @@ import sys
 class Explorer():
     def __init__(self, poligons):
         
-        self.STEP = 5 # шаг
+        self.STEP = 3 # шаг
         self.poligons=poligons
         self.lefts =[]
         self.rights = []
@@ -60,7 +60,7 @@ class Explorer():
         return next
 
     def checkNearestPolygon(self, nextpoint, poligons):
-        max_attempts = 360
+        max_attempts = 2000
         attempt = 0
 
         while attempt < max_attempts:
@@ -125,17 +125,8 @@ class Explorer():
                 C = polygon.points [i]
                 D = polygon.points [i+1]
                 
-                # создаем ориентации
-                o1 = polygon.orientation(A, C, D) # используем функцию orientation из polygon.py
-                # o1 = polygon.orientation(A, B, C) # old version
-                o2 = polygon.orientation(B, C, D)
-                # o2 = polygon.orientation(A, B, D) # old version
-                # o3 = polygon.orientation(C, D, A) # old version
-                # o4 = polygon.orientation(C, D, B) # old version
-
-                # Если C и D по разные стороны от AB, и A и B по разные стороны от CD
-                if o1 * o2 < 0: # and o3 * o4 < 0:
-                    return True
+                self.vector_crossed(A, B, C, D)
+                
         return False
 
     def rotatePoint(self, nextpoint, attempt):
@@ -245,7 +236,36 @@ class Explorer():
             print(f"CROSSED: {C} -> {N} пересекает {A} -> {B}")
         return res
 
+    def vector_multiply(self, vector_A, vector_B):
+        x1, y1 = vector_A
+        x2, y2 = vector_B
+        res = x1*y2 - y1*x2
+        return res
+    
+    def vector_crossed(self, current, next, C, D):
+        A = current
+        B = next
+        Xa, Ya = A
+        Xb, Yb = B
+        Xc, Yc = C
+        Xd, Yd = D
 
+        # вычисляем векторы
+        AB = (Xb-Xa, Yb-Ya)
+        AC = (Xc-Xa, Yc-Ya)
+        AD = (Xd-Xa, Yd-Ya)
+        CA = (Xa-Xc, Ya-Yc)
+        CB = (Xb-Xc, Yb-Yc)
+        CD = (Xd-Xc, Yd-Yc)
+
+        vector_1 = self.vector_multiply(AB, AC)
+        vector_2 = self.vector_multiply(AB, AD)
+        vector_3 = self.vector_multiply(CD, CA)
+        vector_4 = self.vector_multiply(CD, CB)
+
+        if vector_1 * vector_2 < 0 and vector_3 * vector_4 < 0:
+            return True
+        
 
 
 poligons = []
