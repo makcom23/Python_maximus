@@ -142,7 +142,7 @@ class Explorer():
 
     def rotatePoint(self, nextpoint):
         alfa = self.getRadAngle(self.current, nextpoint)
-        alfa_grad = alfa/180*math.pi
+        alfa_grad = alfa * 180 / math.pi
         x1, y1 = nextpoint
         ## и вычисляем координаты следующей точки на основе этого угла
         x = x1 + self.STEP * math.cos(alfa_grad+1)
@@ -164,7 +164,7 @@ class Explorer():
     def rotatePoint2(self, nextpoint):
         alfa = self.getRadAngle(self.current, nextpoint)
         alfa_grad = alfa * 180 / math.pi
-        alfa_grad = alfa_grad + 10
+        alfa_grad = alfa_grad + 1
         alfa_rad = alfa_grad * math.pi / 180
 
         current = np.array(self.current)
