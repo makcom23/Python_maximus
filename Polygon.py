@@ -9,7 +9,7 @@ class Polygon:
         self.height=random.randint(10, 100)
         self.width=random.randint(10, 100)
         self.counter=random.randint(3, 10)
-        #self.counter = 3
+        self.counter = 3
         self.center_x=random.randint(self.width, global_x)
         self.center_y=random.randint(self.height, global_y)
         self.left = self.center_x - self.width // 2
@@ -18,8 +18,9 @@ class Polygon:
         self.bottom = self.center_y - self.height // 2
         self.points = []
 
-    def checkIntersectPolygon (self, item):
-        return self.right < item.left or self.left > item.right or self.top < item.bottom or self.bottom > item.top
+    def isIntersectPolygon (self, item):
+        res = self.right < item.left or self.left > item.right or self.top < item.bottom or self.bottom > item.top
+        return not res # если не пересекаются, то True, иначе False
     
     
     def updatePolygon(self): # передаются новые координаты центра полигонов - проверка на пересечение
@@ -47,7 +48,7 @@ class Polygon:
             self.points.append(self.points[0])
             return self.points
         else:
-            return self.getPoints() # WTF Ш0сь тут не те...!!!
+            return self.createPoints() # WTF Ш0сь тут не те...!!!
         
 
 
@@ -118,56 +119,26 @@ class Polygon:
 
         # создаем "векторы" из пар точек массива
         vectors=[]
+
         for i in range(len(points)):
             A = points[i]
             B = points[(i+1) % len(points)] 
             vectors.append([A, B])
-            #print('vectors: ', vectors)
-        # теперь создаем список пар векторов которые не примыкают друг к другу 
-        for i in range(len(vectors)): # цикл создания пар векторов для проверки пересечения
-            A, B = vectors[i]
-            
-            for j in range(i+1, len(vectors)):
-                C, D = vectors[j]
-                if abs(i-j)==1 or (i==0 and j==len(vectors)-1): # проверка на непересечение
-                    continue
-                  
-                # создаем ориентации
-                o1 = self.orientation(A, B, C)
-                o2 = self.orientation(A, B, D)
-                o3 = self.orientation(C, D, A)
-                o4 = self.orientation(C, D, B)
 
-                # Если C и D по разные стороны от AB, и A и B по разные стороны от CD
-                if o1 * o2 < 0 and o3 * o4 < 0:
-                    return True # есть пересечение
-                    
+        for edge in vectors:
+            A = edge[0]
+            B = edge[1]
+            for i in range(len(vectors)):
+                if vectors[i] == edge:
+                    continue
+                C = vectors[i][0]
+                D = vectors[i][1]
+                if self.isCrossed(A, B, C, D):
+                    print("INTERSECTED")
+                    return True
                             
         return False
     
-    def orientation(self, point1, point2, point3): # проверка ориентации векторов, возвращает знак поворота:
-    # >0 — левый поворот # <0 — правый поворот  # ==0 — точки на одной прямой
-        x1, y1 = point1 # распаковываем кортежи
-        x2, y2 = point2
-        x3, y3 = point3
-        return (x2 - x1) * (y3 - y1) - (y2 - y1) * (x3 - x1)
-        # т.е. имея 3 точки, мы формируем 2 вектора: A = point1 -> point2 = (x2 - x1, y2 - y1)
-        #                                            B = point1 -> point3 = (x3 - x1, y3 - y1)
-        # и далее производим векторное умножения для определения знака, указываещего на ориентацию
-        # т.е.: A*B=(x2−x1)∗(y3−y1)−(y2−y1)∗(x3−x1) 
-        # фактически мы получаем третий вектор, который лежит в плоскости z, 
-        # и ориентирован в ту или иную сторону, но мы используем скалярную величину и ее знак 
-        # для анализа направллености, так как работаем в 2х плоскостях
-        # таким образом мы проделываем это для каждой точки вектора, 
-        # а далее проверка, на какой полуплоскостии лежат точки,
-        # если они лежат в разных полуплоскостях, то имеют разные знаки - пересекат другой вектор
-        # если в одной полуплоскости - то имеею одинаковые знаки - не пересекают
-
-    def multiplyVectors(self, vector_A, vector_B):
-        x_a, y_a = vector_A
-        x_b, y_b = vector_B
-        return x_a * y_b - y_a * x_b
-
     def isCrossed(self, current, next, A, B):
         C = current
         N = next
@@ -197,32 +168,20 @@ class Polygon:
         NA = (x_A - x_N, y_A - y_N)
 
         # Вычисляем произведение векторов
-        R1 = self.multiplyVectors(CN, CB)
-        R2 = self.multiplyVectors(CN, CA)
+        R1 = np.dot(CN, CB)
+        R2 = np.dot(CN, CA)
         
-        R3 = self.multiplyVectors(BA, BN)
-        R4 = self.multiplyVectors(BA, BC)
+        R3 = np.dot(BA, BN)
+        R4 = np.dot(BA, BC)
 
-        R5 = self.multiplyVectors(AB, AC)
-        R6 = self.multiplyVectors(AB, AN)
+        R5 = np.dot(AB, AC)
+        R6 = np.dot(AB, AN)
 
-        R7 = self.multiplyVectors(NC, NB)
-        R8 = self.multiplyVectors(NC, NA)
+        R7 = np.dot(NC, NB)
+        R8 = np.dot(NC, NA)
         
         # Возвращаем ориентацию
         res = R1 * R2 <= 0 and R3 * R4 <= 0 and R5 * R6 <= 0 and R7 * R8 <= 0
         if(res):
             print("CROSSED")
         return res
-    
-
-p = Polygon(100,100)
-
-C = (2,2)
-N = (6,2)
-A = (6,3)
-B = (3,4)
-p.isCrossed(C,N,A,B)
-
-
-

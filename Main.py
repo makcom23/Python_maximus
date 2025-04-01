@@ -6,39 +6,32 @@ import Explorer as expl
 
 # Основной рабочий процесс
 
-height = 500
-width = 500
+height = 300
+width = 300
 
 poligonNumber = range(rnd.randint(3, 50)) # количество полигонов
-poligonNumber = range(20)
-poligonNumber = range(5)
+poligonNumber = range(50)
+#poligonNumber = range(5)
 visualizer = vlz.Visualizer_1()
 poligons = []
 
-for i in poligonNumber:
-    poligon = plg.Polygon(width,height)
-    poligon.name = i+1
-    poligon.createPoints()
-    poligons.append(poligon)
+#for _ in poligonNumber:
+    #poligon = plg.Polygon(width,height)
+    #poligon.createPoints()
+    #poligons.append(poligon)
 
-check = True
-while check:
-    check = False
-    for i in range(len(poligons)):  # проверяем полигоны на пересечения
-        for j in range((i+1), len(poligons)):
-            item1 = poligons[i]
-            item2 = poligons[j]
-            if not  item1.checkIntersectPolygon(item2):
-                step = rnd.randint(-10, 10)
-                j = 1 if step > 0  else -1
-                # разводим сравниваемые полигоны друг от друга
-                item1.center_x = item1.center_x+step * j
-                item1.center_y = item1.center_y-step * j
-                item2.center_x = item2.center_x-step * j
-                item2.center_y = item2.center_y+step * j
-                item1.updatePolygon()
-                item2.updatePolygon()
-                check = True
+for i in poligonNumber:
+    p = None
+    check = True
+    while check:
+        check = False
+        p = plg.Polygon(width,height)
+        for polygon in poligons:
+            check = check or polygon.isIntersectPolygon(p)
+            
+        #pass
+    p.createPoints()
+    poligons.append(p)
         
         #pass
     
