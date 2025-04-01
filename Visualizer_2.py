@@ -29,12 +29,19 @@ class Visualizer_2(Visualizer.Visualizer):
         return int(x), int(y)
 
     def PrintPoligons(self, polygons, explorer):
+        self.global_scale = 2.0  # Масштабирование в два раза
         min_point, max_point = self.getMinMaxSceneRect(polygons)
-        self.setSceneBorders(min_point, max_point)  # Устанавливаем границы сцены
+        self.setSceneBorders(min_point, max_point)
         self.calculate_scale()
 
         pg.init()
-        self.screen = pg.display.set_mode((self.WIDTH, self.HEIGHT))
+        # Получаем размеры экрана
+        screen_info = pg.display.Info()
+        screen_width = screen_info.current_w
+        screen_height = screen_info.current_h
+
+        # Создаем окно с размерами экрана
+        self.screen = pg.display.set_mode((screen_width, screen_height))
         self.screen.fill(self.WHITE)
 
         self.play_music()
