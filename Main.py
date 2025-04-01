@@ -26,11 +26,14 @@ for i in poligonNumber:
     while check:
         check = False
         p = plg.Polygon(width,height)
+        
         for polygon in poligons:
             check = check or polygon.isIntersectPolygon(p)
             
         #pass
     p.createPoints()
+    p.name = i+1
+    
     poligons.append(p)
         
         #pass
