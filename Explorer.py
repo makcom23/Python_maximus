@@ -39,7 +39,7 @@ class Explorer():
             next = self.nextStep()
             x,y = next
             # TODO: проверить на пересечение с полигонами
-            self.checkNearestPolygon(next, self.poligons)
+            next = self.checkNearestPolygon(next, self.poligons)
 
             self.current = next
             
@@ -69,15 +69,12 @@ class Explorer():
         else: 
             if self.pointCrossPoly(crossedPolygons, nextpoint):   # проверка на пересечения
                 #return nextpoint  - это нам уже не нужно?
-                nextpoint = self.rotatePoint(nextpoint)
-                res = True # так что ли запустить pointCrossPoly???   
-                # return self.checkNearestPolygon(nextpoint, poligons) - тут вероятно нужно снова функция 
+                nextpoint = self.rotatePoint2(nextpoint)# поворот точки на 1 градус
+                
+                return self.checkNearestPolygon(nextpoint, poligons) #- тут вероятно нужно снова функция 
                 # проверки pointCrossPoly
             else:
                 return nextpoint
-                  
-            #TODO если точка пересекает полигон, то меняем угол, делаем шаг и снова проверяем     
-
 
     def getNextPosition(self): # вычисление следующей точки
         ## Получаем угол между текущей и конечной точками
@@ -90,18 +87,6 @@ class Explorer():
         # тут можно было бы  использовать y = y1 + self.STEP * math.sin(alfa), но это не результат не очень хороший точный
         return (x,y)
 
-    
-
-    def getRadAngle(self, point_1, point_2):
-        def getRadAngle(x1, y1, x2, y2):
-            dx = x2 - x1
-            dy = y2 - y1
-            angle = math.atan2(dy, dx) #* 180 / math.pi
-            return angle
-        x1, y1 = point_1
-        x2, y2 = point_2
-        return getRadAngle(x1, y1, x2, y2)
-    
     
 
 
@@ -165,3 +150,32 @@ class Explorer():
         nextpoint = (x, y)
         # тут можно было бы  использовать y = y1 + self.STEP * math.sin(alfa), но это не результат не очень хороший точный
         return (nextpoint)       
+    
+    def getRadAngle(self, point_1, point_2):
+        def getRadAngle(x1, y1, x2, y2):
+            dx = x2 - x1
+            dy = y2 - y1
+            angle = math.atan2(dy, dx) #* 180 / math.pi
+            return angle
+        x1, y1 = point_1
+        x2, y2 = point_2
+        return getRadAngle(x1, y1, x2, y2)
+
+    def rotatePoint2(self, nextpoint):
+        alfa = self.getRadAngle(self.current, nextpoint)
+        alfa_grad = alfa * 180 / math.pi
+        alfa_grad = alfa_grad + 10
+        alfa_rad = alfa_grad * math.pi / 180
+
+        current = np.array(self.current)
+        nextpoint = np.array(nextpoint)
+
+        vector = nextpoint - current
+        
+        R = np.array([[np.cos(alfa_rad),-np.sin(alfa_rad)],[np.sin(alfa_rad), np.cos(alfa_rad)]])
+
+        rotated_vector = np.dot(R, vector)
+        rotated_point = current + rotated_vector
+        rotated_point = tuple(rotated_point)
+        return rotated_point
+    
