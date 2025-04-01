@@ -152,8 +152,8 @@ class Explorer():
 
         x1, y1 = nextpoint
         ## и вычисляем координаты следующей точки на основе этого угла
-        x = x1 + self.STEP * math.cos(alfa_rad)
-        y = y1 + self.STEP * math.sin(alfa_rad)
+        x = x1 + self.STEP * math.cos(alfa_grad)
+        y = y1 + self.STEP * math.sin(alfa_grad)
         rotated_point = (x, y)
 
         self.log(f"next = {nextpoint} => {rotated_point}, поворот на {alfa_grad}")
@@ -182,8 +182,8 @@ class Explorer():
 
         vector = nextpoint - current
 
-        cos_rot = np.cos(alfa_rad)
-        sin_rot = np.sin(alfa_rad)
+        cos_rot = np.cos(alfa_grad)
+        sin_rot = np.sin(alfa_grad)
 
         # Матрица поворота
         rotation_matrix = np.array([
