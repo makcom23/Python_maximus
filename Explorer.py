@@ -150,14 +150,15 @@ class Explorer():
         alfa_grad = alfa_grad + 1
         alfa_rad = alfa_grad * math.pi / 180
 
-        print(f"next = {nextpoint}, поворот на {alfa_grad}")
         x1, y1 = nextpoint
         ## и вычисляем координаты следующей точки на основе этого угла
         x = x1 + self.STEP * math.cos(alfa_rad)
         y = y1 + self.STEP * math.sin(alfa_rad)
-        nextpoint = (x, y)
+        rotated_point = (x, y)
+
+        self.log(f"next = {nextpoint} => {rotated_point}, поворот на {alfa_grad}")
         # тут можно было бы  использовать y = y1 + self.STEP * math.sin(alfa), но это не результат не очень хороший точный
-        return (nextpoint)       
+        return rotated_point
     
     def getRadAngle(self, point_1, point_2):
         x1, y1 = point_1
@@ -197,5 +198,6 @@ class Explorer():
         # Возвращаем как кортеж
         rotated_point = tuple(rotated_point)
 
+        self.log(f"next = {nextpoint} => {rotated_point}, поворот на {alfa_grad}")
         return rotated_point
     
