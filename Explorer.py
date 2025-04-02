@@ -60,7 +60,7 @@ class Explorer():
         return next
 
     def checkNearestPolygon(self, nextpoint, poligons):
-        max_attempts = 2000
+        max_attempts = 360
         attempt = 0
 
         while attempt < max_attempts:
@@ -125,14 +125,15 @@ class Explorer():
                 C = polygon.points [i]
                 D = polygon.points [i+1]
                 
-                self.vector_crossed(A, B, C, D)
-                
+                if self.vector_crossed(A, B, C, D):
+                    return True
+
         return False
 
     def rotatePoint(self, nextpoint, attempt):
         alfa = self.getRadAngle(self.current, nextpoint)
         alfa_grad = alfa * 180 / math.pi
-        alfa_grad = alfa_grad + 1
+        alfa_grad = alfa_grad + 20
         alfa_rad = alfa_grad * math.pi / 180
 
         x1, y1 = self.current
@@ -263,8 +264,8 @@ class Explorer():
         vector_3 = self.vector_multiply(CD, CA)
         vector_4 = self.vector_multiply(CD, CB)
 
-        if vector_1 * vector_2 < 0 and vector_3 * vector_4 < 0:
-            return True
+        return vector_1 * vector_2 < 0 and vector_3 * vector_4 < 0 and B != C and B != D
+
         
 
 
