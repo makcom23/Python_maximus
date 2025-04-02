@@ -137,7 +137,7 @@ class Explorer():
     def rotatePoint(self, nextpoint, attempt):
         alfa = self.getRadAngle(self.current, nextpoint)
         alfa_grad = alfa * 180 / math.pi
-        alfa_grad = attempt + 1
+        alfa_grad = alfa_grad + 1
         alfa_rad = alfa_grad * math.pi / 180
 
         x1, y1 = self.current
