@@ -48,6 +48,7 @@ class Explorer():
             self.current = next
             x,y = next
             points.append((x,y))  
+        self.log(f"points: {points}")
         return points
     
     def nextStep(self):
@@ -69,6 +70,8 @@ class Explorer():
 
             nextpoint = self.rotatePoint(nextpoint, attempt)
             attempt += 1
+            if attempt == 89:
+                print(f"Проверка {attempt} градусов")
 
         print("Не удалось найти точку после 360 попыток")
         return nextpoint
@@ -117,15 +120,16 @@ class Explorer():
         with open("log.txt", "w") as log_file:
             log_file.write("")
         
-    def pointCrossPoly(self, crossedPolygons, nextPoint): # ищем пересечения отрезка(вектора) с потенциальными полигонами 
+    def pointCrossPoly(self, polygons, nextPoint): # ищем пересечения отрезка(вектора) с потенциальными полигонами 
         A = self.current
         B = nextPoint
-        for polygon in crossedPolygons: 
+        for polygon in polygons: 
             for i in range(len(polygon.points)-1):
                 C = polygon.points [i]
                 D = polygon.points [i+1]
                 
                 if self.vector_crossed(A, B, C, D):
+                    self.log(f"Пересечение ({polygon.name}): {A} - {B} пересекает {C} - {D}")
                     return True
 
         return False
@@ -133,7 +137,7 @@ class Explorer():
     def rotatePoint(self, nextpoint, attempt):
         alfa = self.getRadAngle(self.current, nextpoint)
         alfa_grad = alfa * 180 / math.pi
-        alfa_grad = alfa_grad + 20
+        alfa_grad = attempt + 1
         alfa_rad = alfa_grad * math.pi / 180
 
         x1, y1 = self.current
@@ -154,11 +158,9 @@ class Explorer():
         angle = math.atan2(dy, dx)
         return angle
 
-    def rotatePoint2(self, nextpoint):
+    def rotatePoint2(self, nextpoint, attempt):
         currentpoint = self.current
-        alfa = self.getRadAngle(currentpoint, nextpoint)
-        alfa_grad = alfa * 180 / math.pi
-        alfa_grad = alfa_grad + 1
+        alfa_grad = attempt + 1
         alfa_rad = alfa_grad * math.pi / 180
 
         current = np.array(currentpoint)
@@ -166,8 +168,8 @@ class Explorer():
 
         vector = nextpoint - current
 
-        cos_rot = np.cos(alfa_grad)
-        sin_rot = np.sin(alfa_grad)
+        cos_rot = np.cos(alfa_rad)
+        sin_rot = np.sin(alfa_rad)
 
         # Матрица поворота
         rotation_matrix = np.array([
@@ -232,7 +234,7 @@ class Explorer():
         R8 = self.multiplyVectors(NC, NA)
         
         # Возвращаем ориентацию
-        res = R1 * R2 <= 0 and R3 * R4 <= 0 and R5 * R6 <= 0 and R7 * R8 <= 0
+        res = (R1 * R2 <= 0 and R3 * R4 <= 0 and R5 * R6 <= 0 and R7 * R8 <= 0) or N == A or N == B
         if(res):
             print(f"CROSSED: {C} -> {N} пересекает {A} -> {B}")
         return res
@@ -264,7 +266,11 @@ class Explorer():
         vector_3 = self.vector_multiply(CD, CA)
         vector_4 = self.vector_multiply(CD, CB)
 
-        return vector_1 * vector_2 < 0 and vector_3 * vector_4 < 0 and B != C and B != D
+        res = (vector_1 * vector_2 <= 0 and vector_3 * vector_4 <= 0) or B == C or B == D
+        
+        if(res):
+            print(f"CROSSED: {A} -> {B} пересекает {C} -> {D}")
+        return res
 
         
 
@@ -273,9 +279,9 @@ poligons = []
 poligon = plg.Polygon(300, 300)
 poligon.createPoints()
 poligon.name = 1
-poligon.points = [(92, 41), (97, 39), (89, 66), (92, 41)]
+poligon.points = [(217, 239), (226, 227), (243, 208), (256, 224), (265, 217), (277, 244), (284, 271), (275, 275), (260, 266), (244, 256), (217, 239)]
 poligons.append(poligon)
 
 explorer = Explorer(poligons)
-explorer.current = (87, 62)
-explorer.checkNearestPolygon((90, 65), poligons)
+explorer.current = (226, 226)
+explorer.checkNearestPolygon((227, 227), poligons)
