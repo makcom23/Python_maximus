@@ -1,0 +1,162 @@
+{
+    "poly0": {
+        "center_x": 231,
+        "center_y": 177,
+        "left": 213,
+        "right": 249,
+        "top": 226,
+        "bottom": 128
+    },
+    "poly1": {
+        "center_x": 68,
+        "center_y": 139,
+        "left": 55,
+        "right": 81,
+        "top": 164,
+        "bottom": 114
+    },
+    "poly2": {
+        "center_x": 215,
+        "center_y": 35,
+        "left": 180,
+        "right": 250,
+        "top": 51,
+        "bottom": 19
+    },
+    "poly3": {
+        "center_x": 47,
+        "center_y": 240,
+        "left": 36,
+        "right": 58,
+        "top": 262,
+        "bottom": 218
+    },
+    "poly4": {
+        "center_x": 295,
+        "center_y": 160,
+        "left": 256,
+        "right": 334,
+        "top": 171,
+        "bottom": 149
+    },
+    "poly5": {
+        "center_x": 131,
+        "center_y": 299,
+        "left": 82,
+        "right": 180,
+        "top": 330,
+        "bottom": 268
+    },
+    "poly6": {
+        "center_x": 118,
+        "center_y": 176,
+        "left": 71,
+        "right": 165,
+        "top": 185,
+        "bottom": 167
+    },
+    "poly7": {
+        "center_x": 177,
+        "center_y": 67,
+        "left": 145,
+        "right": 209,
+        "top": 73,
+        "bottom": 61
+    },
+    "poly8": {
+        "center_x": 289,
+        "center_y": 106,
+        "left": 258,
+        "right": 320,
+        "top": 135,
+        "bottom": 77
+    },
+    "poly9": {
+        "center_x": 280,
+        "center_y": 46,
+        "left": 260,
+        "right": 300,
+        "top": 62,
+        "bottom": 30
+    },
+    "poly10": {
+        "center_x": 292,
+        "center_y": 248,
+        "left": 243,
+        "right": 341,
+        "top": 257,
+        "bottom": 239
+    },
+    "poly11": {
+        "center_x": 129,
+        "center_y": 129,
+        "left": 102,
+        "right": 156,
+        "top": 152,
+        "bottom": 106
+    },
+    "poly12": {
+        "center_x": 238,
+        "center_y": 88,
+        "left": 230,
+        "right": 246,
+        "top": 115,
+        "bottom": 61
+    },
+    "poly13": {
+        "center_x": 37,
+        "center_y": 123,
+        "left": 20,
+        "right": 54,
+        "top": 168,
+        "bottom": 78
+    },
+    "poly14": {
+        "center_x": 120,
+        "center_y": 220,
+        "left": 97,
+        "right": 143,
+        "top": 235,
+        "bottom": 205
+    },
+    "poly15": {
+        "center_x": 59,
+        "center_y": 43,
+        "left": 38,
+        "right": 80,
+        "top": 54,
+        "bottom": 32
+    },
+    "poly16": {
+        "center_x": 266,
+        "center_y": 287,
+        "left": 243,
+        "right": 289,
+        "top": 314,
+        "bottom": 260
+    },
+    "poly17": {
+        "center_x": 21,
+        "center_y": 285,
+        "left": 12,
+        "right": 30,
+        "top": 326,
+        "bottom": 244
+    },
+    "poly18": {
+        "center_x": 152,
+        "center_y": 29,
+        "left": 139,
+        "right": 165,
+        "top": 41,
+        "bottom": 17
+    },
+    "poly19": {
+        "center_x": 194,
+        "center_y": 273,
+        "left": 184,
+        "right": 204,
+        "top": 280,
+        "bottom": 266
+    }
+}

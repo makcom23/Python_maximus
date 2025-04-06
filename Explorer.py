@@ -2,6 +2,8 @@ import Polygon as plg
 import numpy as np
 import math
 import sys
+import json
+import os
 
 class Explorer():
     def __init__(self, poligons):
@@ -68,7 +70,7 @@ class Explorer():
             if not self.pointCrossPoly(poligons, nextpoint):  # проверяем все полигоны
                 return nextpoint
 
-            nextpoint = self.rotatePoint(nextpoint, attempt)
+            nextpoint = self.rotate_point_re(nextpoint, attempt)
             attempt += 1
             if attempt == 89:
                 print(f"Проверка {attempt} градусов")
@@ -150,6 +152,32 @@ class Explorer():
         # тут можно было бы  использовать y = y1 + self.STEP * math.sin(alfa), но это не результат не очень хороший точный
         return rotated_point
     
+    def rotate_point_re(self, nextpoint, attempt):
+        alfa = self.getRadAngle(self.current, nextpoint)
+        alfa_grad = alfa * 180 / math.pi
+        alfa_grad = alfa_grad + 1
+        alfa_rad = alfa_grad * math.pi / 180
+
+        x1, y1 = self.current
+        x2, y2 = nextpoint
+        
+        r = math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2) #радиус вектора
+
+        # используем матричный поворот
+
+        
+        R = np.array([
+        [math.cos(alfa_rad), -math.sin(alfa_rad)],
+        [math.sin(alfa_rad), math.cos(alfa_rad)]
+        ])
+        v = np.array([r, 0])
+        rotated_v = R @ v
+        rotated_point = x1 + rotated_v[0], y1 + rotated_v[1]
+                
+        self.log(f"Поворот: C:{self.current}, N:{nextpoint} => {rotated_point}, поворот на {attempt+1} : {int(alfa_grad)} градус")
+        
+        return rotated_point
+
     def getRadAngle(self, point_1, point_2):
         x1, y1 = point_1
         x2, y2 = point_2
@@ -245,9 +273,10 @@ class Explorer():
         res = x1*y2 - y1*x2
         return res
     
-    def vector_crossed(self, current, next, C, D):
+    def vector_crossed(self, current, next, C, D): # Проверка пересечения двух отрезков АВ и CD
         A = current
         B = next
+        # распаковываем координаты точек
         Xa, Ya = A
         Xb, Yb = B
         Xc, Yc = C
@@ -260,19 +289,20 @@ class Explorer():
         CA = (Xa-Xc, Ya-Yc)
         CB = (Xb-Xc, Yb-Yc)
         CD = (Xd-Xc, Yd-Yc)
-
+        # Перемножаем векторы
         vector_1 = self.vector_multiply(AB, AC)
         vector_2 = self.vector_multiply(AB, AD)
         vector_3 = self.vector_multiply(CD, CA)
-        vector_4 = self.vector_multiply(CD, CB)
-
+        vector_4 = self.vector_multiply(CD, CB)       
+        
+        # Проверяем знаки(направления) векторов и коллинеарность 
         res = (vector_1 * vector_2 <= 0 and vector_3 * vector_4 <= 0) or B == C or B == D
         
+
         if(res):
             print(f"CROSSED: {A} -> {B} пересекает {C} -> {D}")
         return res
 
-        
 
 
 poligons = []

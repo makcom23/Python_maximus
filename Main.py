@@ -3,14 +3,16 @@ import Visualizer_1 as vlz
 import random as rnd 
 import Explorer as expl
 import sys
+import os
+import json
 
 # Основной рабочий процесс
 sys.setrecursionlimit(50000)
 height = 300
 width = 300
 
-poligonNumber = range(rnd.randint(3, 50)) # количество полигонов
-poligonNumber = range(35)
+poligonNumber = range(rnd.randint(3, 20)) # количество полигонов
+poligonNumber = range(20)
 #poligonNumber = range(5)
 visualizer = vlz.Visualizer_1()
 poligons = []
@@ -36,9 +38,18 @@ for i in poligonNumber:
     
     poligons.append(p)
         
-        #pass
-    
+dict_poly = {}
+
+for i in range(len(poligons)):
+    dict_poly[f"poly{i}"] = poligons[i].to_dict()
+
+path = os.path.join(os.path.dirname(__file__), 'settings.json')
+with open(os.path.abspath(path), 'w', encoding='utf-8') as stts:
+    json.dump(dict_poly, stts, indent=4)
+   
+
 explorer = expl.Explorer(poligons)
+
 
 #print(counter)
 visualizer.PrintPoligons(poligons, explorer)

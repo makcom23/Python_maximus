@@ -7,8 +7,8 @@ class Polygon:
     def __init__(self, global_x, global_y):
         self.height=random.randint(10, 100)
         self.width=random.randint(10, 100)
-        self.counter=random.randint(3, 10)
-        self.counter = 3
+        self.counter=random.randint(3, 6)
+        #self.counter = 3
         self.center_x=random.randint(self.width, global_x)
         self.center_y=random.randint(self.height, global_y)
         self.left = self.center_x - self.width // 2
@@ -16,6 +16,16 @@ class Polygon:
         self.top = self.center_y + self.height // 2
         self.bottom = self.center_y - self.height // 2
         self.points = []
+    
+    def to_dict(self):
+        return{
+            "center_x": self.center_x,
+            "center_y": self.center_y,
+            "left": self.left,
+            "right": self.right,
+            "top": self.top,
+            "bottom": self.bottom
+        }
 
     def isIntersectPolygon (self, item):
         res = self.right < item.left or self.left > item.right or self.top < item.bottom or self.bottom > item.top
