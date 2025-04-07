@@ -24,7 +24,8 @@ class Polygon:
             "left": self.left,
             "right": self.right,
             "top": self.top,
-            "bottom": self.bottom
+            "bottom": self.bottom,
+            "point": #тут должна быть точка
         }
 
     def isIntersectPolygon (self, item):

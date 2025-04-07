@@ -5,11 +5,22 @@ import Explorer as expl
 import sys
 import os
 import json
+import load_polygons as lplg
+
 
 # Основной рабочий процесс
 sys.setrecursionlimit(50000)
 height = 300
 width = 300
+
+# Проверка settings.json строки "load_polygons_from_file": True
+path = os.path.join(os.path.dirname(__file__), 'settings.json')
+with open(os.path.abspath(path)) as stts:
+    settings = json.load(stts)
+    if settings.get("load_polygons_from_file") is True:
+        loader = lplg.LoadPolygons()
+        polygons = loader.load()    
+
 
 poligonNumber = range(rnd.randint(3, 20)) # количество полигонов
 poligonNumber = range(20)
@@ -38,15 +49,6 @@ for i in poligonNumber:
     
     poligons.append(p)
         
-dict_poly = {}
-
-for i in range(len(poligons)):
-    dict_poly[f"poly{i}"] = poligons[i].to_dict()
-
-path = os.path.join(os.path.dirname(__file__), 'settings.json')
-with open(os.path.abspath(path), 'w', encoding='utf-8') as stts:
-    json.dump(dict_poly, stts, indent=4)
-   
 
 explorer = expl.Explorer(poligons)
 
