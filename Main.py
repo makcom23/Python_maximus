@@ -6,6 +6,7 @@ import sys
 import os
 import json
 import load_polygons as lplg
+import Save_polygons as splg
 
 
 # Основной рабочий процесс
@@ -17,9 +18,12 @@ width = 300
 path = os.path.join(os.path.dirname(__file__), 'settings.json')
 with open(os.path.abspath(path)) as stts:
     settings = json.load(stts)
-    if settings.get("load_polygons_from_file") is True:
+    if settings.get("load_polygons_from_file") == True:
         loader = lplg.LoadPolygons()
-        polygons = loader.load()    
+        polygons = loader.load() # теперь у нас есть полигоны из модуля load_polygons.py, но без поинтов. 
+                                 # И им нужно добавить поинты и кому-то куда-то пристроить  
+    else:
+        print(f"THE FILE WITH POLYGONS IS UNAVAILABLE OR MISSING OUT. DON'T CRY BABY")
 
 
 poligonNumber = range(rnd.randint(3, 20)) # количество полигонов
@@ -48,7 +52,17 @@ for i in poligonNumber:
     p.name = i+1
     
     poligons.append(p)
-        
+
+# Проверка settings.json строки "save_polygons_after_generation": True
+path = os.path.join(os.path.dirname(__file__), 'settings.json')
+with open(os.path.abspath(path)) as stts:
+    settings=json.load(stts)
+    if settings.get('save_polygons_after_generation') == True:
+        saving = splg.SavePolygons()
+        saving.save()
+    else:
+        print()
+
 
 explorer = expl.Explorer(poligons)
 
