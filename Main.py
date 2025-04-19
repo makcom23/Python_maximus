@@ -3,34 +3,26 @@ import Visualizer_1 as vlz
 import random as rnd 
 import Explorer as expl
 import sys
-import os
-import json
 import load_polygons as lplg
 import Save_polygons as splg
-
+import CheckJson as chjs
 
 # Основной рабочий процесс
 sys.setrecursionlimit(50000)
 height = 300
 width = 300
+poligons = []
 
-# Проверка settings.json строки "load_polygons_from_file": True
-path = os.path.join(os.path.dirname(__file__), 'settings.json')
-with open(os.path.abspath(path)) as stts:
-    settings = json.load(stts)
-    if settings.get("load_polygons_from_file") == True:
-        loader = lplg.LoadPolygons()
-        polygons = loader.load() # теперь у нас есть полигоны из модуля load_polygons.py, но без поинтов. 
-                                 # И им нужно добавить поинты и кому-то куда-то пристроить  
-    else:
-        print(f"THE FILE WITH POLYGONS IS UNAVAILABLE OR MISSING OUT. DON'T CRY BABY")
-
+check = chjs.CheckJson() # Создаем экземпляр класса CheckJson из модуля CheckJson.py
+check.check_json_load() # Вызов проверки файла settings.json, нужно ли загружать полигоны из файла polygon.json, и не пустой ли файл
+poligons = check.check_json_load()
+if not poligons:
+    print(f"Загружено полигонов из polygon.json: {len(poligons)}")
 
 poligonNumber = range(rnd.randint(3, 20)) # количество полигонов
 poligonNumber = range(20)
-#poligonNumber = range(5)
 visualizer = vlz.Visualizer_1()
-poligons = []
+#poligons = []
 
 #for _ in poligonNumber:
     #poligon = plg.Polygon(width,height)
@@ -53,15 +45,8 @@ for i in poligonNumber:
     
     poligons.append(p)
 
-# Проверка settings.json строки "save_polygons_after_generation": True
-path = os.path.join(os.path.dirname(__file__), 'settings.json')
-with open(os.path.abspath(path)) as stts:
-    settings=json.load(stts)
-    if settings.get('save_polygons_after_generation') == True:
-        saving = splg.SavePolygons()
-        saving.save()
-    else:
-        print()
+check = chjs.CheckJson()
+check.check_json_save() # Вызов проверки settings.json нужно ли записывать полигоны в файл polygon.json
 
 
 explorer = expl.Explorer(poligons)

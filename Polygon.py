@@ -17,7 +17,7 @@ class Polygon:
         self.bottom = self.center_y - self.height // 2
         self.points = []
     
-    def to_dict(self):
+    def to_dict(self): # метод для сериализации объектов poligons в файл polygons.json
         return{
             "center_x": self.center_x,
             "center_y": self.center_y,
@@ -25,8 +25,9 @@ class Polygon:
             "right": self.right,
             "top": self.top,
             "bottom": self.bottom,
-            "point": #тут должна быть точка
+            "point": self.points
         }
+    # TODO сделать метод для десериализации из файла polygons.json  
 
     def isIntersectPolygon (self, item):
         res = self.right < item.left or self.left > item.right or self.top < item.bottom or self.bottom > item.top
