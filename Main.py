@@ -13,45 +13,49 @@ height = 300
 width = 300
 poligons = []
 
-check = chjs.CheckJson() # Создаем экземпляр класса CheckJson из модуля CheckJson.py
-check.check_json_load() # Вызов проверки файла settings.json, нужно ли загружать полигоны из файла polygon.json, и не пустой ли файл
-poligons = check.check_json_load()
-if not poligons:
-    print(f"Загружено полигонов из polygon.json: {len(poligons)}")
+#check.check_json_load() # Вызов проверки файла settings.json, нужно ли загружать полигоны из файла polygon.json, и не пустой ли файл
+load_polygons_from_file = chjs.CheckJson.check_json_load()
+if load_polygons_from_file:
 
-poligonNumber = range(rnd.randint(3, 20)) # количество полигонов
-poligonNumber = range(20)
-visualizer = vlz.Visualizer_1()
-#poligons = []
+    poligons = lplg.LoadPolygons.load()
 
-#for _ in poligonNumber:
-    #poligon = plg.Polygon(width,height)
-    #poligon.createPoints()
-    #poligons.append(poligon)
+    if not poligons or len(poligons)==0:
+        print(f"Загружено 0 полигонов")
+        sys.exit()
 
-for i in poligonNumber:
-    p = None
-    check = True
-    while check:
-        check = False
-        p = plg.Polygon(width,height)
-        
-        for polygon in poligons:
-            check = check or polygon.isIntersectPolygon(p)
+else:
+    poligonNumber = range(rnd.randint(3, 20)) # количество полигонов
+    poligonNumber = range(20)
+    #poligons = []
+
+    #for _ in poligonNumber:
+        #poligon = plg.Polygon(width,height)
+        #poligon.createPoints()
+        #poligons.append(poligon)
+
+    for i in poligonNumber:
+        p = None
+        check = True
+        while check:
+            check = False
+            p = plg.Polygon(width,height)
             
-        #pass
-    p.createPoints()
-    p.name = i+1
-    
-    poligons.append(p)
+            for polygon in poligons:
+                check = check or polygon.isIntersectPolygon(p)
+                
+            #pass
+        p.createPoints()
+        p.name = i+1
+        
+        poligons.append(p)
 
-check = chjs.CheckJson()
-check.check_json_save() # Вызов проверки settings.json нужно ли записывать полигоны в файл polygon.json
+    chjs.CheckJson.check_json_save(poligons) # Вызов проверки settings.json нужно ли записывать полигоны в файл polygon.json
 
 
 explorer = expl.Explorer(poligons)
 
 
 #print(counter)
+visualizer = vlz.Visualizer_1()
 visualizer.PrintPoligons(poligons, explorer)
 
