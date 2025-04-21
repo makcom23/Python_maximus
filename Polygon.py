@@ -4,30 +4,44 @@ import sys
 import numpy as np
 
 class Polygon:
-    def __init__(self, global_x, global_y):
+    def __init__(self, global_x=None, global_y=None):
         self.height=random.randint(10, 100)
         self.width=random.randint(10, 100)
         self.counter=random.randint(3, 6)
-        #self.counter = 3
-        self.center_x=random.randint(self.width, global_x)
-        self.center_y=random.randint(self.height, global_y)
-        self.left = self.center_x - self.width // 2
-        self.right = self.center_x + self.width // 2
-        self.top = self.center_y + self.height // 2
-        self.bottom = self.center_y - self.height // 2
+        if global_x!=None and global_y!=None:
+            self.center_x=random.randint(self.width, global_x)
+            self.center_y=random.randint(self.height, global_y)
+            self.left = self.center_x - self.width // 2
+            self.right = self.center_x + self.width // 2
+            self.top = self.center_y + self.height // 2
+            self.bottom = self.center_y - self.height // 2
         self.points = []
+        self.name = 0
     
     def to_dict(self): # метод для сериализации объектов poligons в файл polygons.json
         return{
+            "heght": self.height,
+            "width": self.width,
             "center_x": self.center_x,
             "center_y": self.center_y,
             "left": self.left,
             "right": self.right,
             "top": self.top,
             "bottom": self.bottom,
-            "point": self.points
+            "points": self.points,
+            "name": self.name
         }
-    # TODO сделать метод для десериализации из файла polygons.json  
+    def from_dict(self, p): # метод для десериализации объектов poligons из файла polygons.json
+        self.height=p.get('height')
+        self.width = p.get('width')
+        self.center_x=p.get('center_x')
+        self.center_y=p.get('center_y')
+        self.left = p.get('left')
+        self.right = p.get('right')
+        self.top = p.get('top')
+        self.bottom = p.get('bottom')
+        self.points = p['points']
+        self.name = p.get('name')
 
     def isIntersectPolygon (self, item):
         res = self.right < item.left or self.left > item.right or self.top < item.bottom or self.bottom > item.top

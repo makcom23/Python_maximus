@@ -19,7 +19,7 @@ class Explorer():
         self.clearLog()
 
         for poligon in poligons: 
-            self.log(f"{poligon.name} points: {poligon.points}")
+            #self.log(f"{poligon.name} points: {poligon.points}")
             self.lefts.append(poligon.left)
             self.bottoms.append(poligon.bottom)
             self.tops.append(poligon.top)

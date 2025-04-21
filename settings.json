@@ -1,5 +1,5 @@
 {
-    "load_polygons_from_file": false,
+    "load_polygons_from_file": true,
     "polygons_file": "polygon.json",
     "save_polygons_after_generation": true
 
